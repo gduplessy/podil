@@ -5,6 +5,7 @@ class PagesController < ApplicationController
   require 'mbws'
   require 'last_fm'
   require 'twitter'
+  require 'nokogiri'
 
   def home
     client   = YouTubeG::Client.new
@@ -26,12 +27,14 @@ class PagesController < ApplicationController
   def search
     @title    = "Results"
     search    = params['q']
-    @quer     = search
+    sansearch = CGI.escape(search)
     client    = YouTubeG::Client.new
     @youtube  = client.videos_by(:query => "#{search}", :page => 1, :per_page => 1)
     @msearch  = Search.music_hash
     lfm       = LastFM.new()
     @similar  = lfm.artist.getSimilar(:artist => search, :limit => 5)
     @simitr   = lfm.track.getSimilar(:track => 'tik tok', :artist => 'ke$ha', :limit => 5)
+    @get      = Nokogiri::XML(open("http://api.chartlyrics.com/apiv1.asmx//SearchLyric?#{@title}&song=#{sansearch}"))
   end
+
 end
