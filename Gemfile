@@ -12,7 +12,6 @@ gem 'hpricot'
 gem 'activesupport'
 gem 'twitter'
 gem 'faraday_middleware'
-gem 'nokogiri'
 
 group :development do
   gem 'rspec-rails'
