@@ -129,7 +129,6 @@ DEPENDENCIES
   hpricot
   indextank
   musix_match
-  nokogiri
   rails (= 3.0.3)
   rspec
   rspec-rails
