@@ -32,6 +32,12 @@ GEM
     addressable (2.2.2)
     arel (2.0.6)
     builder (2.1.2)
+    capistrano (2.5.21)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.0.0)
     crack (0.1.8)
     diff-lcs (1.1.2)
     erubis (2.6.6)
@@ -43,6 +49,7 @@ GEM
     faraday_middleware (0.3.1)
       faraday (~> 0.5.3)
     hashie (0.4.0)
+    highline (1.6.1)
     hpricot (0.8.3)
     httparty (0.6.1)
       crack (= 0.1.8)
@@ -65,6 +72,13 @@ GEM
     musix_match (0.1.10)
       httparty (>= 0.6.1)
       json
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.1.4)
+    net-ssh-gateway (1.0.1)
+      net-ssh (>= 1.99.1)
     nokogiri (1.4.4)
     polyglot (0.3.1)
     rack (1.2.1)
@@ -125,6 +139,7 @@ PLATFORMS
 DEPENDENCIES
   RedCloth
   activesupport
+  capistrano
   faraday_middleware
   hpricot
   indextank

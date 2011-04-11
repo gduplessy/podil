@@ -12,6 +12,7 @@ gem 'hpricot'
 gem 'activesupport'
 gem 'twitter'
 gem 'faraday_middleware'
+gem 'capistrano'
 
 group :development do
   gem 'rspec-rails'
