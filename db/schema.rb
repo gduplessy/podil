@@ -10,12 +10,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101224191402) do
-
-  create_table "searches", :force => true do |t|
-    t.string   "search"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+ActiveRecord::Schema.define(version: 20_101_224_191_402) do
+  create_table 'searches', force: true do |t|
+    t.string 'search'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
-
 end

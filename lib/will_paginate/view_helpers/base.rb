@@ -9,7 +9,7 @@ module WillPaginate
     module Base
       # Renders Digg/Flickr-style pagination for a WillPaginate::Collection object. Nil is
       # returned if there is only one page in total; pagination links aren't needed in that case.
-      # 
+      #
       # ==== Options
       # * <tt>:class</tt> -- CSS class name for the generated DIV (default: "pagination")
       # * <tt>:previous_label</tt> -- default: "« Previous"
@@ -31,7 +31,7 @@ module WillPaginate
       #
       # All options beside listed ones are passed as HTML attributes to the container
       # element for pagination links (the DIV). For example:
-      # 
+      #
       #   <%= will_paginate @posts, :id => 'wp_posts' %>
       #
       # ... will result in:
@@ -41,14 +41,14 @@ module WillPaginate
       def will_paginate(collection, options = {})
         # early exit if there is nothing to render
         return nil unless collection.total_pages > 1
-        
+
         options = WillPaginate::ViewHelpers.pagination_options.merge(options)
-        
+
         if options[:prev_label]
-          WillPaginate::Deprecation::warn(":prev_label view parameter is now :previous_label; the old name has been deprecated.")
+          WillPaginate::Deprecation.warn(':prev_label view parameter is now :previous_label; the old name has been deprecated.')
           options[:previous_label] = options.delete(:prev_label)
         end
-        
+
         # get the renderer instance
         renderer = case options[:renderer]
         when String
@@ -62,7 +62,7 @@ module WillPaginate
         renderer.prepare collection, options, self
         renderer.to_html
       end
-      
+
       # Renders a helpful message with numbers of displayed vs. total entries.
       # You can use this as a blueprint for your own, similar helpers.
       #
@@ -85,17 +85,17 @@ module WillPaginate
       # By default, this method produces HTML output. You can trigger plain
       # text output by passing <tt>:html => false</tt> in options.
       def page_entries_info(collection, options = {})
-        entry_name = options[:entry_name] || (collection.empty?? 'entry' :
+        entry_name = options[:entry_name] || (collection.empty? ? 'entry' :
                      collection.first.class.name.underscore.gsub('_', ' '))
-        
+
         plural_name = if options[:plural_name]
-          options[:plural_name]
-        elsif entry_name == 'entry'
-          plural_name = 'entries'
-        elsif entry_name.respond_to? :pluralize
-          plural_name = entry_name.pluralize
-        else
-          entry_name + 's'
+                        options[:plural_name]
+                      elsif entry_name == 'entry'
+                        plural_name = 'entries'
+                      elsif entry_name.respond_to? :pluralize
+                        plural_name = entry_name.pluralize
+                      else
+                        entry_name + 's'
         end
 
         unless options[:html] == false
@@ -106,15 +106,15 @@ module WillPaginate
           b  = eb = ''
           sp = ' '
         end
-        
+
         if collection.total_pages < 2
           case collection.size
-          when 0; "No #{plural_name} found"
-          when 1; "Displaying #{b}1#{eb} #{entry_name}"
+          when 0 then "No #{plural_name} found"
+          when 1 then "Displaying #{b}1#{eb} #{entry_name}"
           else;   "Displaying #{b}all #{collection.size}#{eb} #{plural_name}"
           end
         else
-          %{Displaying #{plural_name} #{b}%d#{sp}-#{sp}%d#{eb} of #{b}%d#{eb} in total} % [
+          %(Displaying #{plural_name} #{b}%d#{sp}-#{sp}%d#{eb} of #{b}%d#{eb} in total) % [
             collection.offset + 1,
             collection.offset + collection.length,
             collection.total_entries

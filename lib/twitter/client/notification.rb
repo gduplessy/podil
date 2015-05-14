@@ -15,7 +15,7 @@ module Twitter
       # @example Enable device notifications for updates from @sferik
       #   Twitter.enable_notifications("sferik")
       #   Twitter.enable_notifications(7505382)  # Same as above
-      def enable_notifications(user, options={})
+      def enable_notifications(user, options = {})
         merge_user_into_options!(user, options)
         response = post('notifications/follow', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
@@ -34,7 +34,7 @@ module Twitter
       # @example Disable device notifications for updates from @sferik
       #   Twitter.disable_notifications("sferik")
       #   Twitter.disable_notifications(7505382)  # Same as above
-      def disable_notifications(user, options={})
+      def disable_notifications(user, options = {})
         merge_user_into_options!(user, options)
         response = post('notifications/leave', options)
         format.to_s.downcase == 'xml' ? response['user'] : response

@@ -21,7 +21,7 @@ module WillPaginate
       super "#{page.inspect} given as value, which translates to '#{page_num}' as page number"
     end
   end
-  
+
   # = The key to pagination
   # Arrays returned from paginating finds are, in fact, instances of this little
   # class. You may think of WillPaginate::Collection as an ordinary array with
@@ -30,14 +30,14 @@ module WillPaginate
   #
   # WillPaginate::Collection also assists in rolling out your own pagination
   # solutions: see +create+.
-  # 
+  #
   # If you are writing a library that provides a collection which you would like
   # to conform to this API, you don't have to copy these methods over; simply
   # make your plugin/gem dependant on the "will_paginate" gem:
   #
   #   gem 'will_paginate'
   #   require 'will_paginate/collection'
-  #   
+  #
   #   # now use WillPaginate::Collection directly or subclass it
   class Collection < Array
     attr_reader :current_page, :per_page, :total_entries, :total_pages
@@ -48,10 +48,10 @@ module WillPaginate
     # populating the collection using the +replace+ method.
     def initialize(page, per_page, total = nil)
       @current_page = page.to_i
-      raise InvalidPage.new(page, @current_page) if @current_page < 1
+      fail InvalidPage.new(page, @current_page) if @current_page < 1
       @per_page = per_page.to_i
-      raise ArgumentError, "`per_page` setting cannot be less than 1 (#{@per_page} given)" if @per_page < 1
-      
+      fail ArgumentError, "`per_page` setting cannot be less than 1 (#{@per_page} given)" if @per_page < 1
+
       self.total_entries = total if total
     end
 
@@ -82,7 +82,7 @@ module WillPaginate
     #
     # The Array#paginate API has since then changed, but this still serves as a
     # fine example of WillPaginate::Collection usage.
-    def self.create(page, per_page, total = nil, &block)
+    def self.create(page, per_page, total = nil, &_block)
       pager = new(page, per_page, total)
       yield pager
       pager
@@ -132,10 +132,10 @@ module WillPaginate
     # in +create+.
     def replace(array)
       result = super
-      
+
       # The collection is shorter then page limit? Rejoice, because
       # then we know that we are on the last page!
-      if total_entries.nil? and length < per_page and (current_page == 1 or length > 0)
+      if total_entries.nil? && length < per_page && (current_page == 1 || length > 0)
         self.total_entries = offset + length
       end
 

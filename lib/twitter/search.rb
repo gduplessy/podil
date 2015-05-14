@@ -28,7 +28,7 @@ module Twitter
       super
     end
 
-    alias :api_endpoint :search_endpoint
+    alias_method :api_endpoint, :search_endpoint
 
     # Clears all query filters and cached results
     #
@@ -59,8 +59,8 @@ module Twitter
       @query[:q] << query
       self
     end
-    alias :contains :containing
-    alias :q :containing
+    alias_method :contains, :containing
+    alias_method :q, :containing
 
     # Negative search query
     #
@@ -76,10 +76,10 @@ module Twitter
       @query[:q] << "-#{query}"
       self
     end
-    alias :does_not_contain :not_containing
-    alias :excluding :not_containing
-    alias :excludes :not_containing
-    alias :exclude :not_containing
+    alias_method :does_not_contain, :not_containing
+    alias_method :excluding, :not_containing
+    alias_method :excludes, :not_containing
+    alias_method :exclude, :not_containing
 
     # Search for a specific phrase instead of a group of words
     #
@@ -98,7 +98,7 @@ module Twitter
     # @return [Twitter::Search] self
     # @example Return an array of tweets containing "twitter" and URLs
     #   Twitter::Search.new.containing("twitter").filter.fetch
-    def filter(filter='links')
+    def filter(filter = 'links')
       @query[:q] << "filter:#{filter}"
       self
     end
@@ -113,7 +113,7 @@ module Twitter
       @query[:since] = date
       self
     end
-    alias :since :since_date
+    alias_method :since, :since_date
 
     # Only include tweets from before a given date
     #
@@ -125,7 +125,7 @@ module Twitter
       @query[:until] = date
       self
     end
-    alias :until :until_date
+    alias_method :until, :until_date
 
     # Only include tweets with a positive attitude
     #
@@ -133,7 +133,7 @@ module Twitter
     # @example Return an array of tweets containing happy emoticons
     #   Twitter::Search.new.positive.fetch
     def positive
-      @query[:q] << ":)"
+      @query[:q] << ':)'
       self
     end
 
@@ -143,7 +143,7 @@ module Twitter
     # @example Return an array of tweets containing sad emoticons
     #   Twitter::Search.new.negative.fetch
     def negative
-      @query[:q] << ":("
+      @query[:q] << ':('
       self
     end
 
@@ -153,7 +153,7 @@ module Twitter
     # @example Return an array of tweets containing question marks
     #   Twitter::Search.new.question.fetch
     def question
-      @query[:q] << "?"
+      @query[:q] << '?'
       self
     end
 
@@ -171,7 +171,7 @@ module Twitter
       @query[:lang] = code
       self
     end
-    alias :lang :language
+    alias_method :lang, :language
 
     # Specify the locale of the query you are sending
     #
@@ -194,7 +194,7 @@ module Twitter
     # @example Return an array of tweets within a 1-mile radius of Twitter HQ
     #   Twitter::Search.new.containing("twitter").geocode(37.781157, -122.398720, "1mi").fetch
     def geocode(lat, long, radius)
-      @query[:geocode] = [lat, long, radius].join(",")
+      @query[:geocode] = [lat, long, radius].join(',')
       self
     end
 
@@ -276,9 +276,9 @@ module Twitter
       @query[:q] << "@#{screen_name.gsub('@', '')}"
       self
     end
-    alias :referencing :mentioning
-    alias :mentions :mentioning
-    alias :references :mentioning
+    alias_method :referencing, :mentioning
+    alias_method :mentions, :mentioning
+    alias_method :references, :mentioning
 
     # Exclude tweets mentioning a given user, specified by screen_name
     #
@@ -290,9 +290,9 @@ module Twitter
       @query[:q] << "-@#{screen_name.gsub('@', '')}"
       self
     end
-    alias :not_referencing :not_mentioning
-    alias :does_not_mention :not_mentioning
-    alias :does_not_reference :not_mentioning
+    alias_method :not_referencing, :not_mentioning
+    alias_method :does_not_mention, :not_mentioning
+    alias_method :does_not_reference, :not_mentioning
 
     # @group Twitter filters
 
@@ -302,7 +302,7 @@ module Twitter
     # @example Return an array of retweets containing "twitter"
     #   Twitter::Search.new.containing("twitter").retweets.fetch
     def retweets
-      @query[:q] << "rt"
+      @query[:q] << 'rt'
       self
     end
 
@@ -312,7 +312,7 @@ module Twitter
     # @example Return an array of tweets containing "twitter", excluding retweets
     #   Twitter::Search.new.containing("twitter").no_retweets.fetch
     def no_retweets
-      @query[:q] << "-rt"
+      @query[:q] << '-rt'
       self
     end
 
@@ -339,8 +339,8 @@ module Twitter
       @query[:q] << "-\##{tag.gsub('#', '')}"
       self
     end
-    alias :excludes_hashtag :excluding_hashtag
-    alias :exclude_hashtag :excluding_hashtag
+    alias_method :excludes_hashtag, :excluding_hashtag
+    alias_method :exclude_hashtag, :excluding_hashtag
 
     # Only include tweets with an ID greater than the specified ID
     #
@@ -364,7 +364,7 @@ module Twitter
       @query[:max_id] = id
       self
     end
-    alias :max :max_id
+    alias_method :max, :max_id
 
     # Specify what type of search results you want to receive
     #
@@ -372,7 +372,7 @@ module Twitter
     # @return [Twitter::Search] self
     # @example Return an array of recent tweets containing "twitter"
     #   Twitter::Search.new.containing("twitter").result_type("recent").fetch
-    def result_type(result_type="mixed")
+    def result_type(result_type = 'mixed')
       @query[:result_type] = result_type
       self
     end
@@ -396,11 +396,11 @@ module Twitter
     # @return [Twitter::Search] self
     # @example Return an array of 100 tweets containing "twitter"
     #   Twitter::Search.new.containing("twitter").per_page(100).fetch
-    def per_page(number=15)
+    def per_page(number = 15)
       @query[:rpp] = number
       self
     end
-    alias :rpp :per_page
+    alias_method :rpp, :per_page
 
     # Specify the page number to return, up to a maximum of roughly 1500 results
     #
@@ -421,7 +421,7 @@ module Twitter
     #   search.next_page? #=> true
     def next_page?
       fetch if @cache.nil?
-      !!@cache["next_page"]
+      !!@cache['next_page']
     end
 
     # @group Fetching
@@ -434,7 +434,7 @@ module Twitter
     #   search.fetch_next_page
     def fetch_next_page
       if next_page?
-        @cache = get("search", CGI.parse(@cache["next_page"][1..-1]))
+        @cache = get('search', CGI.parse(@cache['next_page'][1..-1]))
         @cache.results
       end
     end
@@ -445,11 +445,11 @@ module Twitter
     # @return [Array] Tweets that match specified query.
     # @example Return an array of tweets containing "twitter"
     #   search = Twitter::Search.new.containing("twitter").fetch
-    def fetch(force=false)
+    def fetch(force = false)
       if @cache.nil? || force
         options = query.dup
-        options[:q] = options[:q].join(" ")
-        @cache = get("search", options)
+        options[:q] = options[:q].join(' ')
+        @cache = get('search', options)
       end
       @cache.results
     end
@@ -463,8 +463,7 @@ module Twitter
     #     puts "#{result.from_user}: #{result.text}"
     #   end
     def each
-      fetch.each{|result| yield result}
+      fetch.each { |result| yield result }
     end
-
   end
 end

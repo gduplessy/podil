@@ -15,7 +15,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/public_timeline
       # @example Return the 20 most recent statuses, including retweets if they exist, from non-protected users
       #   Twitter.public_timeline
-      def public_timeline(options={})
+      def public_timeline(options = {})
         response = get('statuses/public_timeline', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end
@@ -38,7 +38,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/home_timeline
       # @example Return the 20 most recent statuses, including retweets if they exist, posted by the authenticating user and the users they follow
       #   Twitter.home_timeline
-      def home_timeline(options={})
+      def home_timeline(options = {})
         response = get('statuses/home_timeline', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end
@@ -62,7 +62,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/friends_timeline
       # @example Return the 20 most recent statuses, including retweets if they exist, posted by the authenticating user and the users they follow
       #   Twitter.friends_timeline
-      def friends_timeline(options={})
+      def friends_timeline(options = {})
         response = get('statuses/friends_timeline', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end
@@ -87,7 +87,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/user_timeline
       # @example Return the 20 most recent statuses posted by @sferik
       #   Twitter.user_timeline("sferik")
-      def user_timeline(user, options={})
+      def user_timeline(user, options = {})
         merge_user_into_options!(user, options)
         response = get('statuses/user_timeline', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
@@ -111,7 +111,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/mentions
       # @example Return the 20 most recent mentions (statuses containing @username) for the authenticating user
       #   Twitter.mentions
-      def mentions(options={})
+      def mentions(options = {})
         response = get('statuses/mentions', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end
@@ -132,7 +132,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/retweeted_by_me
       # @example Return the 20 most recent retweets posted by the authenticating user
       #   Twitter.retweeted_by_me
-      def retweeted_by_me(options={})
+      def retweeted_by_me(options = {})
         response = get('statuses/retweeted_by_me', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end
@@ -153,7 +153,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/retweeted_to_me
       # @example Return the 20 most recent retweets posted by users followed by the authenticating user
       #   Twitter.retweeted_to_me
-      def retweeted_to_me(options={})
+      def retweeted_to_me(options = {})
         response = get('statuses/retweeted_to_me', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end
@@ -174,7 +174,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/statuses/retweets_of_me
       # @example Return the 20 most recent tweets of the authenticated user that have been retweeted by others
       #   Twitter.retweets_of_me
-      def retweets_of_me(options={})
+      def retweets_of_me(options = {})
         response = get('statuses/retweets_of_me', options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
       end

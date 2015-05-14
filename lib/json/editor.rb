@@ -15,16 +15,18 @@ module JSON
     TITLE                 = 'JSON Editor'.freeze
 
     # Columns constants
-    ICON_COL, TYPE_COL, CONTENT_COL = 0, 1, 2
+    ICON_COL = 0
+    TYPE_COL = 1
+    CONTENT_COL = 2
 
     # JSON primitive types (Containers)
-    CONTAINER_TYPES = %w[Array Hash].sort
+    CONTAINER_TYPES = %w(Array Hash).sort
     # All JSON primitive types
-    ALL_TYPES = (%w[TrueClass FalseClass Numeric String NilClass] +
+    ALL_TYPES = (%w(TrueClass FalseClass Numeric String NilClass) +
                  CONTAINER_TYPES).sort
 
     # The Nodes necessary for the tree representation of a JSON document
-    ALL_NODES = (ALL_TYPES + %w[Key]).sort
+    ALL_NODES = (ALL_TYPES + %w(Key)).sort
 
     DEFAULT_DIALOG_KEY_PRESS_HANDLER = lambda do |dialog, event|
       case event.keyval
@@ -36,27 +38,27 @@ module JSON
     end
 
     # Returns the Gdk::Pixbuf of the icon named _name_ from the icon cache.
-    def Editor.fetch_icon(name)
+    def self.fetch_icon(name)
       @icon_cache ||= {}
       unless @icon_cache.key?(name)
         path = File.dirname(__FILE__)
         @icon_cache[name] = Gdk::Pixbuf.new(File.join(path, name + '.xpm'))
       end
-     @icon_cache[name]
+      @icon_cache[name]
     end
 
     # Opens an error dialog on top of _window_ showing the error message
     # _text_.
-    def Editor.error_dialog(window, text)
-      dialog = MessageDialog.new(window, Dialog::MODAL, 
-        MessageDialog::ERROR, 
-        MessageDialog::BUTTONS_CLOSE, text)
+    def self.error_dialog(window, text)
+      dialog = MessageDialog.new(window, Dialog::MODAL,
+                                 MessageDialog::ERROR,
+                                 MessageDialog::BUTTONS_CLOSE, text)
       dialog.show_all
       dialog.run
     rescue TypeError
-      dialog = MessageDialog.new(Editor.window, Dialog::MODAL, 
-        MessageDialog::ERROR, 
-        MessageDialog::BUTTONS_CLOSE, text)
+      dialog = MessageDialog.new(Editor.window, Dialog::MODAL,
+                                 MessageDialog::ERROR,
+                                 MessageDialog::BUTTONS_CLOSE, text)
       dialog.show_all
       dialog.run
     ensure
@@ -66,10 +68,10 @@ module JSON
     # Opens a yes/no question dialog on top of _window_ showing the error
     # message _text_. If yes was answered _true_ is returned, otherwise
     # _false_.
-    def Editor.question_dialog(window, text)
-      dialog = MessageDialog.new(window, Dialog::MODAL, 
-        MessageDialog::QUESTION, 
-        MessageDialog::BUTTONS_YES_NO, text)
+    def self.question_dialog(window, text)
+      dialog = MessageDialog.new(window, Dialog::MODAL,
+                                 MessageDialog::QUESTION,
+                                 MessageDialog::BUTTONS_YES_NO, text)
       dialog.show_all
       dialog.run do |response|
         return Gtk::Dialog::RESPONSE_YES === response
@@ -80,7 +82,7 @@ module JSON
 
     # Convert the tree model starting from Gtk::TreeIter _iter_ into a Ruby
     # data structure and return it.
-    def Editor.model2data(iter)
+    def self.model2data(iter)
       return nil if iter.nil?
       case iter.type
       when 'Hash'
@@ -118,12 +120,12 @@ module JSON
     # Gtk::TreeStore is created as the model. The _parent_ parameter specifies
     # the parent node (iter, Gtk:TreeIter instance) to which the data is
     # appended, alternativeley the result of the yielded block is used as iter.
-    def Editor.data2model(data, model = nil, parent = nil)
+    def self.data2model(data, model = nil, parent = nil)
       model ||= TreeStore.new(Gdk::Pixbuf, String, String)
       iter = if block_given?
-        yield model
-      else
-        model.append(parent)
+               yield model
+             else
+               model.append(parent)
       end
       case data
       when Hash
@@ -233,9 +235,9 @@ module JSON
         item = klass.new(label)
         item.signal_connect(:activate, &callback)
         if keyval
-          self.signal_connect(:'key-press-event') do |item, event|
+          signal_connect(:'key-press-event') do |item, event|
             if event.state & Gdk::Window::ModifierType::CONTROL_MASK != 0 and
-              event.keyval == keyval
+               event.keyval == keyval
               callback.call item
             end
           end
@@ -248,7 +250,7 @@ module JSON
       # this instance. It has to be called after an instance of this class is
       # created, to build the menu.
       def create
-        raise NotImplementedError
+        fail NotImplementedError
       end
 
       def method_missing(*a, &b)
@@ -262,18 +264,20 @@ module JSON
       include MenuExtension
 
       # Change the type or content of the selected node.
-      def change_node(item)
+      def change_node(_item)
         if current = selection.selected
           parent = current.parent
-          old_type, old_content = current.type, current.content
+          old_type = current.type
+          old_content = current.content
           if ALL_TYPES.include?(old_type)
             @clipboard_data = Editor.model2data(current)
             type, content = ask_for_element(parent, current.type,
-              current.content)
+                                            current.content)
             if type
-              current.type, current.content = type, content
+              current.type = type
+              current.content = content
               current.remove_subtree(model)
-              toplevel.display_status("Changed a node in tree.")
+              toplevel.display_status('Changed a node in tree.')
               window.change
             end
           else
@@ -285,7 +289,7 @@ module JSON
 
       # Cut the selected node and its subtree, and save it into the
       # clipboard.
-      def cut_node(item)
+      def cut_node(_item)
         if current = selection.selected
           if current and current.type == 'Key'
             @clipboard_data = {
@@ -296,13 +300,13 @@ module JSON
           end
           model.remove(current)
           window.change
-          toplevel.display_status("Cut a node from tree.")
+          toplevel.display_status('Cut a node from tree.')
         end
       end
 
       # Copy the selected node and its subtree, and save it into the
       # clipboard.
-      def copy_node(item)
+      def copy_node(_item)
         if current = selection.selected
           if current and current.type == 'Key'
             @clipboard_data = {
@@ -312,13 +316,13 @@ module JSON
             @clipboard_data = Editor.model2data(current)
           end
           window.change
-          toplevel.display_status("Copied a node from tree.")
+          toplevel.display_status('Copied a node from tree.')
         end
       end
 
       # Paste the data in the clipboard into the selected Array or Hash by
       # appending it.
-      def paste_node_appending(item)
+      def paste_node_appending(_item)
         if current = selection.selected
           if @clipboard_data
             case current.type
@@ -347,16 +351,16 @@ module JSON
                 "Cannot paste node below '#{current.type}'!")
             end
           else
-            toplevel.display_status("Nothing to paste in clipboard!")
+            toplevel.display_status('Nothing to paste in clipboard!')
           end
         else
-            toplevel.display_status("Append a node into the root first!")
+          toplevel.display_status('Append a node into the root first!')
         end
       end
 
       # Paste the data in the clipboard into the selected Array inserting it
       # before the selected element.
-      def paste_node_inserting_before(item)
+      def paste_node_inserting_before(_item)
         if current = selection.selected
           if @clipboard_data
             parent = current.parent or return
@@ -369,7 +373,7 @@ module JSON
                 m.insert_before(parent, current)
               end
               expand_collapse(current)
-              toplevel.display_status("Inserted an element to " +
+              toplevel.display_status('Inserted an element to ' \
                 "'#{parent_type}' before index #{selected_index}.")
               window.change
             else
@@ -377,15 +381,15 @@ module JSON
                 "Cannot insert node below '#{parent_type}'!")
             end
           else
-            toplevel.display_status("Nothing to paste in clipboard!")
+            toplevel.display_status('Nothing to paste in clipboard!')
           end
         else
-            toplevel.display_status("Append a node into the root first!")
+          toplevel.display_status('Append a node into the root first!')
         end
       end
 
       # Append a new node to the selected Hash or Array.
-      def append_new_node(item)
+      def append_new_node(_item)
         if parent = selection.selected
           parent_type = parent.type
           case parent_type
@@ -415,7 +419,7 @@ module JSON
       end
 
       # Insert a new node into an Array before the selected element.
-      def insert_new_node(item)
+      def insert_new_node(_item)
         if current = selection.selected
           parent = current.parent or return
           parent_parent = parent.parent
@@ -427,8 +431,9 @@ module JSON
             type, content = ask_for_element(parent)
             type or return
             iter = model.insert_before(parent, current)
-            iter.type, iter.content = type, content
-            toplevel.display_status("Inserted an element to " +
+            iter.type = type
+            iter.content = content
+            toplevel.display_status('Inserted an element to ' \
               "'#{parent_type}' before index #{selected_index}.")
             window.change
           else
@@ -436,12 +441,12 @@ module JSON
               "Cannot insert node below '#{parent_type}'!")
           end
         else
-            toplevel.display_status("Append a node into the root first!")
+          toplevel.display_status('Append a node into the root first!')
         end
       end
 
       # Recursively collapse/expand a subtree starting from the selected node.
-      def collapse_expand(item)
+      def collapse_expand(_item)
         if current = selection.selected
           if row_expanded?(current.path)
             collapse_row(current.path)
@@ -449,29 +454,29 @@ module JSON
             expand_row(current.path, true)
           end
         else
-            toplevel.display_status("Append a node into the root first!")
+          toplevel.display_status('Append a node into the root first!')
         end
       end
 
       # Create the menu.
       def create
-        add_item("Change node", ?n, &method(:change_node))
+        add_item('Change node', 'n', &method(:change_node))
         add_separator
-        add_item("Cut node", ?X, &method(:cut_node))
-        add_item("Copy node", ?C, &method(:copy_node))
-        add_item("Paste node (appending)", ?A, &method(:paste_node_appending))
-        add_item("Paste node (inserting before)", ?I,
-          &method(:paste_node_inserting_before))
+        add_item('Cut node', 'X', &method(:cut_node))
+        add_item('Copy node', 'C', &method(:copy_node))
+        add_item('Paste node (appending)', 'A', &method(:paste_node_appending))
+        add_item('Paste node (inserting before)', 'I',
+                 &method(:paste_node_inserting_before))
         add_separator
-        add_item("Append new node", ?a, &method(:append_new_node))
-        add_item("Insert new node before", ?i, &method(:insert_new_node))
-        add_separator 
-        add_item("Collapse/Expand node (recursively)", ?e,
-          &method(:collapse_expand))
+        add_item('Append new node', 'a', &method(:append_new_node))
+        add_item('Insert new node before', 'i', &method(:insert_new_node))
+        add_separator
+        add_item('Collapse/Expand node (recursively)', 'e',
+                 &method(:collapse_expand))
 
         menu.show_all
-        signal_connect(:button_press_event) do |widget, event|
-          if event.kind_of? Gdk::EventButton and event.button == 3
+        signal_connect(:button_press_event) do |_widget, event|
+          if event.is_a? Gdk::EventButton and event.button == 3
             menu.popup(nil, nil, event.button, event.time)
           end
         end
@@ -487,39 +492,39 @@ module JSON
 
       # Clear the model and filename, but ask to save the JSON document, if
       # unsaved changes have occured.
-      def new(item)
+      def new(_item)
         window.clear
       end
 
       # Open a file and load it into the editor. Ask to save the JSON document
       # first, if unsaved changes have occured.
-      def open(item)
+      def open(_item)
         window.file_open
       end
 
-      def open_location(item)
+      def open_location(_item)
         window.location_open
       end
 
       # Revert the current JSON document in the editor to the saved version.
-      def revert(item)
+      def revert(_item)
         window.instance_eval do
-          @filename and file_open(@filename) 
+          @filename and file_open(@filename)
         end
       end
 
       # Save the current JSON document.
-      def save(item)
+      def save(_item)
         window.file_save
       end
 
       # Save the current JSON document under the given filename.
-      def save_as(item)
+      def save_as(_item)
         window.file_save_as
       end
 
       # Quit the editor, after asking to save any unsaved changes first.
-      def quit(item)
+      def quit(_item)
         window.quit
       end
 
@@ -528,14 +533,14 @@ module JSON
         title = MenuItem.new('File')
         title.submenu = menu
         add_item('New', &method(:new))
-        add_item('Open', ?o, &method(:open))
-        add_item('Open location', ?l, &method(:open_location))
+        add_item('Open', 'o', &method(:open))
+        add_item('Open location', 'l', &method(:open_location))
         add_item('Revert', &method(:revert))
         add_separator
-        add_item('Save', ?s, &method(:save))
-        add_item('Save As', ?S, &method(:save_as))
+        add_item('Save', 's', &method(:save))
+        add_item('Save As', 'S', &method(:save_as))
         add_separator
-        add_item('Quit', ?q, &method(:quit))
+        add_item('Quit', 'q', &method(:quit))
         title
       end
     end
@@ -545,15 +550,15 @@ module JSON
       include MenuExtension
 
       # Copy data from model into primary clipboard.
-      def copy(item)
+      def copy(_item)
         data = Editor.model2data(model.iter_first)
-        json = JSON.pretty_generate(data, :max_nesting => false)
+        json = JSON.pretty_generate(data, max_nesting: false)
         c = Gtk::Clipboard.get(Gdk::Selection::PRIMARY)
         c.text = json
       end
 
       # Copy json text from primary clipboard into model.
-      def paste(item)
+      def paste(_item)
         c = Gtk::Clipboard.get(Gdk::Selection::PRIMARY)
         if json = c.wait_for_text
           window.ask_save if @changed
@@ -567,7 +572,7 @@ module JSON
 
       # Find a string in all nodes' contents and select the found node in the
       # treeview.
-      def find(item)
+      def find(_item)
         @search = ask_for_find_term(@search) or return
         iter = model.get_iter('0') or return
         iter.recursive_each do |i|
@@ -579,15 +584,15 @@ module JSON
               next
             end
           elsif @search.match(i[CONTENT_COL])
-             set_cursor(i.path, nil, false)
-             @iter = i
-             break
+            set_cursor(i.path, nil, false)
+            @iter = i
+            break
           end
         end
       end
 
       # Repeat the last search given by #find.
-      def find_again(item)
+      def find_again(_item)
         @search or return
         iter = model.get_iter('0')
         iter.recursive_each do |i|
@@ -599,16 +604,16 @@ module JSON
               next
             end
           elsif @search.match(i[CONTENT_COL])
-             set_cursor(i.path, nil, false)
-             @iter = i
-             break
+            set_cursor(i.path, nil, false)
+            @iter = i
+            break
           end
         end
       end
 
       # Sort (Reverse sort) all elements of the selected array by the given
       # expression. _x_ is the element in question.
-      def sort(item)
+      def sort(_item)
         if current = selection.selected
           if current.type == 'Array'
             parent = current.parent
@@ -618,9 +623,9 @@ module JSON
             begin
               block = eval "lambda { |x| #{order} }"
               if reverse
-                ary.sort! { |a,b| block[b] <=> block[a] }
+                ary.sort! { |a, b| block[b] <=> block[a] }
               else
-                ary.sort! { |a,b| block[a] <=> block[b] }
+                ary.sort! { |a, b| block[a] <=> block[b] }
               end
             rescue => e
               Editor.error_dialog(self, "Failed to sort Array with #{order}: #{e}!")
@@ -631,13 +636,13 @@ module JSON
               model.remove(current)
               expand_collapse(parent)
               window.change
-              toplevel.display_status("Array has been sorted.")
+              toplevel.display_status('Array has been sorted.')
             end
           else
-            toplevel.display_status("Only Array nodes can be sorted!")
+            toplevel.display_status('Only Array nodes can be sorted!')
           end
         else
-            toplevel.display_status("Select an Array to sort first!")
+          toplevel.display_status('Select an Array to sort first!')
         end
       end
 
@@ -645,13 +650,13 @@ module JSON
       def create
         title = MenuItem.new('Edit')
         title.submenu = menu
-        add_item('Copy', ?c, &method(:copy))
-        add_item('Paste', ?v, &method(:paste))
+        add_item('Copy', 'c', &method(:copy))
+        add_item('Paste', 'v', &method(:paste))
         add_separator
-        add_item('Find', ?f, &method(:find))
-        add_item('Find Again', ?g, &method(:find_again))
+        add_item('Find', 'f', &method(:find))
+        add_item('Find Again', 'g', &method(:find_again))
         add_separator
-        add_item('Sort', ?S, &method(:sort))
+        add_item('Sort', 'S', &method(:sort))
         title
       end
     end
@@ -660,18 +665,18 @@ module JSON
       include MenuExtension
 
       # Collapse/Expand all nodes by default.
-      def collapsed_nodes(item)
+      def collapsed_nodes(_item)
         if expanded
           self.expanded = false
           collapse_all
         else
           self.expanded = true
-          expand_all 
+          expand_all
         end
       end
 
       # Toggle pretty saving mode on/off.
-      def pretty_saving(item)
+      def pretty_saving(_item)
         @pretty_item.toggled
         window.change
       end
@@ -684,7 +689,7 @@ module JSON
         title.submenu = menu
         add_item('Collapsed nodes', nil, CheckMenuItem, &method(:collapsed_nodes))
         @pretty_item = add_item('Pretty saving', nil, CheckMenuItem,
-          &method(:pretty_saving))
+                                &method(:pretty_saving))
         @pretty_item.active = true
         window.unchange
         title
@@ -701,7 +706,7 @@ module JSON
       def initialize(window)
         @window = window
         super(TreeStore.new(Gdk::Pixbuf, String, String))
-        self.selection.mode = SELECTION_BROWSE
+        selection.mode = SELECTION_BROWSE
 
         @expanded = false
         self.headers_visible = false
@@ -720,21 +725,21 @@ module JSON
       def add_columns
         cell = CellRendererPixbuf.new
         column = TreeViewColumn.new('Icon', cell,
-          'pixbuf'      => ICON_COL
-        )
+                                    'pixbuf'      => ICON_COL
+                                   )
         append_column(column)
 
         cell = CellRendererText.new
         column = TreeViewColumn.new('Type', cell,
-          'text'      => TYPE_COL
-        )
+                                    'text'      => TYPE_COL
+                                   )
         append_column(column)
 
         cell = CellRendererText.new
         cell.editable = true
         column = TreeViewColumn.new('Content', cell,
-          'text'       => CONTENT_COL
-        )
+                                    'text'       => CONTENT_COL
+                                   )
         cell.signal_connect(:edited, &method(:cell_edited))
         append_column(column)
       end
@@ -746,13 +751,13 @@ module JSON
           old_key = key
           i = 0
           begin
-            key = sprintf("%s.%d", old_key, i += 1)
+            key = sprintf('%s.%d', old_key, i += 1)
           end while parent.any? { |c| c != iter and c.content == key }
         end
         iter.content = key
       end
 
-      def cell_edited(cell, path, value)
+      def cell_edited(_cell, path, value)
         iter = model.get_iter(path)
         case iter.type
         when 'Key'
@@ -761,12 +766,14 @@ module JSON
         when 'FalseClass'
           value.downcase!
           if value == 'true'
-            iter.type, iter.content = 'TrueClass', 'true'
+            iter.type = 'TrueClass'
+            iter.content = 'true'
           end
         when 'TrueClass'
           value.downcase!
           if value == 'false'
-            iter.type, iter.content = 'FalseClass', 'false'
+            iter.type = 'FalseClass'
+            iter.content = 'false'
           end
         when 'Numeric'
           iter.content =
@@ -800,7 +807,7 @@ module JSON
           value.text ||= ''
           value.editable = true
         else
-          raise ArgumentError, "unknown type '#{type}' encountered"
+          fail ArgumentError, "unknown type '#{type}' encountered"
         end
       end
 
@@ -816,13 +823,14 @@ module JSON
       # the editor treeview.
       def create_node(parent, type, content)
         iter = if parent
-          model.append(parent)
-        else
-          new_model = Editor.data2model(nil)
-          toplevel.view_new_model(new_model)
-          new_model.iter_first
+                 model.append(parent)
+               else
+                 new_model = Editor.data2model(nil)
+                 toplevel.view_new_model(new_model)
+                 new_model.iter_first
         end
-        iter.type, iter.content = type, content
+        iter.type = type
+        iter.content = content
         expand_collapse(parent) if parent
         iter
       end
@@ -831,14 +839,14 @@ module JSON
       def ask_for_hash_pair(parent)
         key_input = type_input = value_input = nil
 
-        dialog = Dialog.new("New (key, value) pair for Hash", nil, nil,
-          [ Stock::OK, Dialog::RESPONSE_ACCEPT ],
-          [ Stock::CANCEL, Dialog::RESPONSE_REJECT ]
-        )
+        dialog = Dialog.new('New (key, value) pair for Hash', nil, nil,
+                            [Stock::OK, Dialog::RESPONSE_ACCEPT],
+                            [Stock::CANCEL, Dialog::RESPONSE_REJECT]
+                           )
         dialog.width_request = 640
 
         hbox = HBox.new(false, 5)
-        hbox.pack_start(Label.new("Key:"), false)
+        hbox.pack_start(Label.new('Key:'), false)
         hbox.pack_start(key_input = Entry.new)
         key_input.text = @key || ''
         dialog.vbox.pack_start(hbox, false)
@@ -852,7 +860,7 @@ module JSON
         end
 
         hbox = HBox.new(false, 5)
-        hbox.pack_start(Label.new("Type:"), false)
+        hbox.pack_start(Label.new('Type:'), false)
         hbox.pack_start(type_input = ComboBox.new(true))
         ALL_TYPES.each { |t| type_input.append_text(t) }
         type_input.active = @type || 0
@@ -876,7 +884,7 @@ module JSON
         end
 
         hbox = HBox.new(false, 5)
-        hbox.pack_start(Label.new("Value:"), false)
+        hbox.pack_start(Label.new('Value:'), false)
         hbox.pack_start(value_input = Entry.new)
         value_input.width_chars = 60
         value_input.text = @value || ''
@@ -885,7 +893,7 @@ module JSON
         dialog.signal_connect(:'key-press-event', &DEFAULT_DIALOG_KEY_PRESS_HANDLER)
         dialog.show_all
         self.focus = dialog
-        dialog.run do |response| 
+        dialog.run do |response|
           if response == Dialog::RESPONSE_ACCEPT
             @key = key_input.text
             type = ALL_TYPES[@type = type_input.active]
@@ -905,19 +913,17 @@ module JSON
         dialog = Dialog.new(
           "New element into #{parent ? parent.type : 'root'}",
           nil, nil,
-          [ Stock::OK, Dialog::RESPONSE_ACCEPT ],
-          [ Stock::CANCEL, Dialog::RESPONSE_REJECT ]
+          [Stock::OK, Dialog::RESPONSE_ACCEPT],
+          [Stock::CANCEL, Dialog::RESPONSE_REJECT]
         )
         hbox = HBox.new(false, 5)
-        hbox.pack_start(Label.new("Type:"), false)
+        hbox.pack_start(Label.new('Type:'), false)
         hbox.pack_start(type_input = ComboBox.new(true))
         default_active = 0
         types = parent ? ALL_TYPES : CONTAINER_TYPES
         types.each_with_index do |t, i|
           type_input.append_text(t)
-          if t == default_type
-            default_active = i
-          end
+          default_active = i if t == default_type
         end
         type_input.active = default_active
         dialog.vbox.pack_start(hbox, false)
@@ -926,7 +932,7 @@ module JSON
         end
 
         hbox = HBox.new(false, 5)
-        hbox.pack_start(Label.new("Value:"), false)
+        hbox.pack_start(Label.new('Value:'), false)
         hbox.pack_start(value_input = Entry.new)
         value_input.width_chars = 60
         value_input.text = value_text if value_text
@@ -937,7 +943,7 @@ module JSON
         dialog.signal_connect(:'key-press-event', &DEFAULT_DIALOG_KEY_PRESS_HANDLER)
         dialog.show_all
         self.focus = dialog
-        dialog.run do |response| 
+        dialog.run do |response|
           if response == Dialog::RESPONSE_ACCEPT
             type = types[type_input.active]
             @content = case type
@@ -965,12 +971,12 @@ module JSON
         dialog = Dialog.new(
           "Give an order criterium for 'x'.",
           nil, nil,
-          [ Stock::OK, Dialog::RESPONSE_ACCEPT ],
-          [ Stock::CANCEL, Dialog::RESPONSE_REJECT ]
+          [Stock::OK, Dialog::RESPONSE_ACCEPT],
+          [Stock::CANCEL, Dialog::RESPONSE_REJECT]
         )
         hbox = HBox.new(false, 5)
 
-        hbox.pack_start(Label.new("Order:"), false)
+        hbox.pack_start(Label.new('Order:'), false)
         hbox.pack_start(order_input = Entry.new)
         order_input.text = @order || 'x'
         order_input.width_chars = 60
@@ -982,7 +988,7 @@ module JSON
         dialog.signal_connect(:'key-press-event', &DEFAULT_DIALOG_KEY_PRESS_HANDLER)
         dialog.show_all
         self.focus = dialog
-        dialog.run do |response| 
+        dialog.run do |response|
           if response == Dialog::RESPONSE_ACCEPT
             return @order = order_input.text, reverse_checkbox.active?
           end
@@ -996,14 +1002,14 @@ module JSON
       # string.
       def ask_for_find_term(search = nil)
         dialog = Dialog.new(
-          "Find a node matching regex in tree.",
+          'Find a node matching regex in tree.',
           nil, nil,
-          [ Stock::OK, Dialog::RESPONSE_ACCEPT ],
-          [ Stock::CANCEL, Dialog::RESPONSE_REJECT ]
+          [Stock::OK, Dialog::RESPONSE_ACCEPT],
+          [Stock::CANCEL, Dialog::RESPONSE_REJECT]
         )
         hbox = HBox.new(false, 5)
 
-        hbox.pack_start(Label.new("Regex:"), false)
+        hbox.pack_start(Label.new('Regex:'), false)
         hbox.pack_start(regex_input = Entry.new)
         hbox.pack_start(icase_checkbox = CheckButton.new('Icase'), false)
         regex_input.width_chars = 60
@@ -1017,7 +1023,7 @@ module JSON
         dialog.signal_connect(:'key-press-event', &DEFAULT_DIALOG_KEY_PRESS_HANDLER)
         dialog.show_all
         self.focus = dialog
-        dialog.run do |response| 
+        dialog.run do |response|
           if response == Dialog::RESPONSE_ACCEPT
             begin
               return Regexp.new(regex_input.text, icase_checkbox.active? ? Regexp::IGNORECASE : 0)
@@ -1057,7 +1063,7 @@ module JSON
 
         vbox = VBox.new(false, 0)
         add(vbox)
-        #vbox.border_width = 0
+        # vbox.border_width = 0
 
         @treeview = JSONTreeView.new(self)
         @treeview.signal_connect(:'cursor-changed') do
@@ -1082,7 +1088,7 @@ module JSON
           view_new_model Editor.data2model(data)
         end
 
-        signal_connect(:button_release_event) do |_,event|
+        signal_connect(:button_release_event) do |_, event|
           if event.button == 2
             c = Gtk::Clipboard.get(Gdk::Selection::PRIMARY)
             if url = c.wait_for_text
@@ -1140,7 +1146,7 @@ module JSON
       # Opens a dialog, asking, if changes should be saved to a file.
       def ask_save
         if Editor.question_dialog(self,
-          "Unsaved changes to JSON model. Save?")
+                                  'Unsaved changes to JSON model. Save?')
           if @filename
             file_save
           else
@@ -1162,8 +1168,8 @@ module JSON
       # Display the new title according to the editor's current state.
       def display_title
         title = TITLE.dup
-        title << ": #@filename" if @filename
-        title << " *" if @changed
+        title << ": #{@filename}" if @filename
+        title << ' *' if @changed
         self.title = title
       end
 
@@ -1171,7 +1177,7 @@ module JSON
       def clear
         ask_save if @changed
         @filename = nil
-        self.view_new_model nil
+        view_new_model nil
       end
 
       def check_pretty_printed(json)
@@ -1200,9 +1206,7 @@ module JSON
 
       # Edit the string _json_ in the editor.
       def edit(json)
-        if json.respond_to? :read
-          json = json.read
-        end
+        json = json.read if json.respond_to? :read
         data = parse_json json
         view_new_model Editor.data2model(data)
       end
@@ -1216,7 +1220,7 @@ module JSON
         end
       end
 
-      # Save the current file as the filename 
+      # Save the current file as the filename
       def file_save_as
         filename = select_file('Save as a JSON file')
         store_file(filename)
@@ -1229,30 +1233,30 @@ module JSON
           File.open(path + '.tmp', 'wb') do |output|
             data or break
             if @options_menu.pretty_item.active?
-              output.puts JSON.pretty_generate(data, :max_nesting => false)
+              output.puts JSON.pretty_generate(data, max_nesting: false)
             else
-              output.write JSON.generate(data, :max_nesting => false)
+              output.write JSON.generate(data, max_nesting: false)
             end
           end
           File.rename path + '.tmp', path
           @filename = path
-          toplevel.display_status("Saved data to '#@filename'.")
+          toplevel.display_status("Saved data to '#{@filename}'.")
           unchange
         end
       rescue SystemCallError => e
         Editor.error_dialog(self, "Failed to store JSON file: #{e}!")
       end
-  
+
       # Load the file named _filename_ into the editor as a JSON document.
       def load_file(filename)
         if filename
           if File.directory?(filename)
-            Editor.error_dialog(self, "Try to select a JSON file!")
+            Editor.error_dialog(self, 'Try to select a JSON file!')
             nil
           else
             @filename = filename
             if data = read_data(filename)
-              toplevel.display_status("Loaded data from '#@filename'.")
+              toplevel.display_status("Loaded data from '#{@filename}'.")
             end
             display_title
             data
@@ -1275,7 +1279,7 @@ module JSON
           iconverter = Iconv.new('utf8', @encoding)
           json = iconverter.iconv(json)
         end
-        JSON::parse(json, :max_nesting => false, :create_additions => false)
+        JSON.parse(json, max_nesting: false, create_additions: false)
       end
       private :parse_json
 
@@ -1319,14 +1323,14 @@ module JSON
       # Ask for location URI a to load data from. Returns the URI as a string.
       def ask_for_location
         dialog = Dialog.new(
-          "Load data from location...",
+          'Load data from location...',
           nil, nil,
-          [ Stock::OK, Dialog::RESPONSE_ACCEPT ],
-          [ Stock::CANCEL, Dialog::RESPONSE_REJECT ]
+          [Stock::OK, Dialog::RESPONSE_ACCEPT],
+          [Stock::CANCEL, Dialog::RESPONSE_REJECT]
         )
         hbox = HBox.new(false, 5)
 
-        hbox.pack_start(Label.new("Location:"), false)
+        hbox.pack_start(Label.new('Location:'), false)
         hbox.pack_start(location_input = Entry.new)
         location_input.width_chars = 60
         location_input.text = @location || ''
@@ -1335,7 +1339,7 @@ module JSON
 
         dialog.signal_connect(:'key-press-event', &DEFAULT_DIALOG_KEY_PRESS_HANDLER)
         dialog.show_all
-        dialog.run do |response| 
+        dialog.run do |response|
           if response == Dialog::RESPONSE_ACCEPT
             return @location = location_input.text
           end
@@ -1352,7 +1356,7 @@ module JSON
       def start(encoding = 'utf8') # :yield: window
         Gtk.init
         @window = Editor::MainWindow.new(encoding)
-        @window.icon_list = [ Editor.fetch_icon('json') ]
+        @window.icon_list = [Editor.fetch_icon('json')]
         yield @window if block_given?
         @window.show_all
         Gtk.main

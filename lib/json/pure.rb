@@ -12,12 +12,13 @@ module JSON
     UTF8toUTF16.iconv('no bom')
   rescue LoadError
     raise MissingUnicodeSupport,
-      "iconv couldn't be loaded, which is required for UTF-8/UTF-16 conversions"
+          "iconv couldn't be loaded, which is required for UTF-8/UTF-16 conversions"
   rescue Errno::EINVAL, Iconv::InvalidEncoding
     # Iconv doesn't support big endian utf-16. Let's try to hack this manually
     # into the converters.
     begin
-      old_verbose, $VERBSOSE = $VERBOSE, nil
+      old_verbose = $VERBOSE
+      $VERBSOSE = nil
       # An iconv instance to convert from UTF8 to UTF16 Big Endian.
       UTF16toUTF8 = Iconv.new('utf-8', 'utf-16') # :nodoc:
       # An iconv instance to convert from UTF16 Big Endian to UTF8.
@@ -68,7 +69,7 @@ module JSON
   # This module holds all the modules/classes that implement JSON's
   # functionality in pure ruby.
   module Pure
-    $DEBUG and warn "Using pure library for JSON."
+    $DEBUG && warn('Using pure library for JSON.')
     JSON.parser = Parser
     JSON.generator = Generator
   end

@@ -56,26 +56,26 @@ module JSON
         modul = generator_methods.const_get(const)
         klass.class_eval do
           instance_methods(false).each do |m|
-            m.to_s == 'to_json' and remove_method m
+            m.to_s == 'to_json' && remove_method(m)
           end
           include modul
         end
       end
       self.state = generator::State
-      const_set :State, self.state
+      const_set :State, state
       const_set :SAFE_STATE_PROTOTYPE, State.new
       const_set :FAST_STATE_PROTOTYPE, State.new(
-        :indent         => '',
-        :space          => '',
-        :object_nl      => "",
-        :array_nl       => "",
-        :max_nesting    => false
+        indent: '',
+        space: '',
+        object_nl: '',
+        array_nl: '',
+        max_nesting: false
       )
       const_set :PRETTY_STATE_PROTOTYPE, State.new(
-        :indent         => '  ',
-        :space          => ' ',
-        :object_nl      => "\n",
-        :array_nl       => "\n"
+        indent: '  ',
+        space: ' ',
+        object_nl: "\n",
+        array_nl: "\n"
       )
     end
 
@@ -93,9 +93,9 @@ module JSON
   end
   self.create_id = 'json_class'
 
-  NaN           = 0.0/0
+  NaN           = 0.0 / 0
 
-  Infinity      = 1.0/0
+  Infinity      = 1.0 / 0
 
   MinusInfinity = -Infinity
 
@@ -163,8 +163,8 @@ module JSON
   #   defaults to true.
   def parse!(source, opts = {})
     opts = {
-      :max_nesting  => false,
-      :allow_nan    => true
+      max_nesting: false,
+      allow_nan: true
     }.update(opts)
     Parser.new(source, opts).parse
   end
@@ -183,7 +183,7 @@ module JSON
   # * *indent*: a string used to indent levels (default: ''),
   # * *space*: a string that is put after, a : or , delimiter (default: ''),
   # * *space_before*: a string that is put before a : pair delimiter (default: ''),
-  # * *object_nl*: a string that is put at the end of a JSON object (default: ''), 
+  # * *object_nl*: a string that is put at the end of a JSON object (default: ''),
   # * *array_nl*: a string that is put at the end of a JSON array (default: ''),
   # * *allow_nan*: true if NaN, Infinity, and -Infinity should be
   #   generated, otherwise an exception is thrown, if these values are
@@ -203,7 +203,7 @@ module JSON
       elsif opts.respond_to? :to_h
         opts = opts.to_h
       else
-        raise TypeError, "can't convert #{opts.class} into Hash"
+        fail TypeError, "can't convert #{opts.class} into Hash"
       end
       state = state.configure(opts)
     end
@@ -213,7 +213,7 @@ module JSON
   # :stopdoc:
   # I want to deprecate these later, so I'll first be silent about them, and
   # later delete them.
-  alias unparse generate
+  alias_method :unparse, :generate
   module_function :unparse
   # :startdoc:
 
@@ -230,7 +230,7 @@ module JSON
       elsif opts.respond_to? :to_h
         opts = opts.to_h
       else
-        raise TypeError, "can't convert #{opts.class} into Hash"
+        fail TypeError, "can't convert #{opts.class} into Hash"
       end
       state.configure(opts)
     end
@@ -239,7 +239,7 @@ module JSON
 
   # :stopdoc:
   # I want to deprecate these later, so I'll first be silent about them, and later delete them.
-  alias fast_unparse fast_generate
+  alias_method :fast_unparse, :fast_generate
   module_function :fast_unparse
   # :startdoc:
 
@@ -257,7 +257,7 @@ module JSON
       elsif opts.respond_to? :to_h
         opts = opts.to_h
       else
-        raise TypeError, "can't convert #{opts.class} into Hash"
+        fail TypeError, "can't convert #{opts.class} into Hash"
       end
       state.configure(opts)
     end
@@ -266,7 +266,7 @@ module JSON
 
   # :stopdoc:
   # I want to deprecate these later, so I'll first be silent about them, and later delete them.
-  alias pretty_unparse pretty_generate
+  alias_method :pretty_unparse, :pretty_generate
   module_function :pretty_unparse
   # :startdoc:
 
@@ -285,7 +285,7 @@ module JSON
     else
       source = source.read
     end
-    result = parse(source, :max_nesting => false, :allow_nan => true)
+    result = parse(source, max_nesting: false, allow_nan: true)
     recurse_proc(result, &proc) if proc
     result
   end
@@ -303,7 +303,7 @@ module JSON
     end
   end
 
-  alias restore load
+  alias_method :restore, :load
   module_function :restore
 
   # Dumps _obj_ as a JSON string, i.e. calls generate on the object and returns
@@ -319,7 +319,7 @@ module JSON
   # This method is part of the implementation of the load/dump interface of
   # Marshal and YAML.
   def dump(obj, anIO = nil, limit = nil)
-    if anIO and limit.nil?
+    if anIO && limit.nil?
       anIO = anIO.to_io if anIO.respond_to?(:to_io)
       unless anIO.respond_to?(:write)
         limit = anIO
@@ -327,7 +327,7 @@ module JSON
       end
     end
     limit ||= 0
-    result = generate(obj, :allow_nan => true, :max_nesting => limit)
+    result = generate(obj, allow_nan: true, max_nesting: limit)
     if anIO
       anIO.write result
       anIO
@@ -335,7 +335,7 @@ module JSON
       result
     end
   rescue JSON::NestingError
-    raise ArgumentError, "exceed depth limit"
+    raise ArgumentError, 'exceed depth limit'
   end
 
   # Shortuct for iconv.
@@ -351,7 +351,7 @@ module ::Kernel
   # one line.
   def j(*objs)
     objs.each do |obj|
-      puts JSON::generate(obj, :allow_nan => true, :max_nesting => false)
+      puts JSON.generate(obj, allow_nan: true, max_nesting: false)
     end
     nil
   end
@@ -360,7 +360,7 @@ module ::Kernel
   # indentation and over many lines.
   def jj(*objs)
     objs.each do |obj|
-      puts JSON::pretty_generate(obj, :allow_nan => true, :max_nesting => false)
+      puts JSON.pretty_generate(obj, allow_nan: true, max_nesting: false)
     end
     nil
   end

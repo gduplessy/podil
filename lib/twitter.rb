@@ -11,7 +11,7 @@ module Twitter
   # Alias for Twitter::Client.new
   #
   # @return [Twitter::Client]
-  def self.client(options={})
+  def self.client(options = {})
     Twitter::Client.new(options)
   end
 

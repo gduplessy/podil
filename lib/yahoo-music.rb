@@ -1,10 +1,10 @@
 require 'rubygems'
 require 'cgi'
-require 'hpricot' 
+require 'hpricot'
 require 'activesupport'
 
-$:.unshift(File.dirname(__FILE__)) unless
-  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+$LOAD_PATH.unshift(File.dirname(__FILE__)) unless
+  $LOAD_PATH.include?(File.dirname(__FILE__)) || $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__)))
 
 require 'rest'
 require 'yahoo-music/base'
@@ -19,13 +19,13 @@ require 'yahoo-music/video'
 
 module Yahoo
   module Music
-    LOCALE      = "us"
+    LOCALE      = 'us'
     API_URL     = "http://#{LOCALE}.music.yahooapis.com/"
     API_VERSION = 'v1'
-    
+
     class << self
       def app_id=(_id)
-        Yahoo::Music::Base::connection = REST::Connection.new(API_URL, 'app_id' => _id)
+        Yahoo::Music::Base.connection = REST::Connection.new(API_URL, 'app_id' => _id)
       end
     end
   end

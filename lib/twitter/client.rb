@@ -7,9 +7,9 @@ module Twitter
     # Require client method modules after initializing the Client class in
     # order to avoid a superclass mismatch error, allowing those modules to be
     # Client-namespaced.
-    Dir[File.expand_path('../client/*.rb', __FILE__)].each{|f| require f}
+    Dir[File.expand_path('../client/*.rb', __FILE__)].each { |f| require f }
 
-    alias :api_endpoint :endpoint
+    alias_method :api_endpoint, :endpoint
 
     include Twitter::Client::Utils
 

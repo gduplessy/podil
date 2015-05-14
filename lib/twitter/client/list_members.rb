@@ -19,8 +19,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/:user/:list_id/members
       # @example Return the members of @sferik's "presidents" list
       #   Twitter.list_members("sferik", "presidents")
-      def list_members(screen_name, list_id, options={})
-        options = {:cursor => -1}.merge(options)
+      def list_members(screen_name, list_id, options = {})
+        options = { cursor: -1 }.merge(options)
         clean_screen_name!(screen_name)
         response = get("#{screen_name}/#{list_id}/members", options)
         format.to_s.downcase == 'xml' ? response['users_list'] : response
@@ -41,9 +41,9 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/:user/:list_id/members
       # @example Add @BarackObama to @sferik's "presidents" list
       #   Twitter.list_add_member("sferik", "presidents", 813286)
-      def list_add_member(screen_name, list_id, id, options={})
+      def list_add_member(screen_name, list_id, id, options = {})
         clean_screen_name!(screen_name)
-        response = post("#{screen_name}/#{list_id}/members", options.merge(:id => id))
+        response = post("#{screen_name}/#{list_id}/members", options.merge(id: id))
         format.to_s.downcase == 'xml' ? response['list'] : response
       end
 
@@ -62,7 +62,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/:user/:list_id/create_all
       # @example Add @BarackObama and @Jasonfinn to @sferik's "presidents" list
       #   Twitter.list_add_members("sferik", "presidents", [813286, 18755393])
-      def list_add_members(screen_name, list_id, users, options={})
+      def list_add_members(screen_name, list_id, users, options = {})
         clean_screen_name!(screen_name)
         merge_users_into_options!(Array(users), options)
         response = post("#{screen_name}/#{list_id}/create_all", options)
@@ -83,9 +83,9 @@ module Twitter
       # @see http://dev.twitter.com/doc/delete/:user/:list_id/members
       # @example Remove @BarackObama from @sferik's "presidents" list
       #   Twitter.list_remove_member("sferik", "presidents", 813286)
-      def list_remove_member(screen_name, list_id, id, options={})
+      def list_remove_member(screen_name, list_id, id, options = {})
         clean_screen_name!(screen_name)
-        response = delete("#{screen_name}/#{list_id}/members", options.merge(:id => id))
+        response = delete("#{screen_name}/#{list_id}/members", options.merge(id: id))
         format.to_s.downcase == 'xml' ? response['list'] : response
       end
 
@@ -103,7 +103,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/:user/:list_id/members/:id
       # @example Check if @BarackObama is a member of @sferik's "presidents" list
       #   Twitter.is_list_member?("sferik", "presidents", 813286)
-      def is_list_member?(screen_name, list_id, id, options={})
+      def is_list_member?(screen_name, list_id, id, options = {})
         clean_screen_name!(screen_name)
         begin
           get("#{screen_name}/#{list_id}/members/#{id}", options)

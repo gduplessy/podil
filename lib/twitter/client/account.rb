@@ -14,7 +14,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/account/verify_credentials
       # @example Return the requesting user if authentication was successful
       #   Twitter.verify_credentials
-      def verify_credentials(options={})
+      def verify_credentials(options = {})
         response = get('account/verify_credentials', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
@@ -31,7 +31,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/account/rate_limit_status
       # @example Return the remaining number of API requests available to the requesting user
       #   Twitter.rate_limit_status
-      def rate_limit_status(options={})
+      def rate_limit_status(options = {})
         response = get('account/rate_limit_status', options)
         format.to_s.downcase == 'xml' ? response['hash'] : response
       end
@@ -46,7 +46,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/account/end_session
       # @example End the session of the authenticating user
       #   Twitter.end_session
-      def end_session(options={})
+      def end_session(options = {})
         response = post('account/end_session', options)
         format.to_s.downcase == 'xml' ? response['hash'] : response
       end
@@ -63,8 +63,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/account/update_delivery_device
       # @example Turn SMS updates on for the authenticating user
       #   Twitter.update_delivery_device('sms')
-      def update_delivery_device(device, options={})
-        response = post('account/update_delivery_device', options.merge(:device => device))
+      def update_delivery_device(device, options = {})
+        response = post('account/update_delivery_device', options.merge(device: device))
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
 
@@ -84,7 +84,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/account/update_profile_colors
       # @example Set authenticating user's profile background to black
       #   Twitter.update_profile_colors(:profile_background_color => '000000')
-      def update_profile_colors(options={})
+      def update_profile_colors(options = {})
         response = post('account/update_profile_colors', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
@@ -102,8 +102,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/account/update_profile_image
       # @example Update the authenticating user's profile image
       #   Twitter.update_profile_image(File.new("me.jpeg"))
-      def update_profile_image(image, options={})
-        response = post('account/update_profile_image', options.merge(:image => image))
+      def update_profile_image(image, options = {})
+        response = post('account/update_profile_image', options.merge(image: image))
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
 
@@ -120,8 +120,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/account/update_profile_background_image
       # @example Update the authenticating user's profile background image
       #   Twitter.update_profile_background_image(File.new("we_concept_bg2.png"))
-      def update_profile_background_image(image, options={})
-        response = post('account/update_profile_background_image', options.merge(:image => image))
+      def update_profile_background_image(image, options = {})
+        response = post('account/update_profile_background_image', options.merge(image: image))
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
 
@@ -141,7 +141,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/account/update_profile
       # @example Set authenticating user's name to Erik Michaels-Ober
       #   Twitter.update_profile(:name => "Erik Michaels-Ober")
-      def update_profile(options={})
+      def update_profile(options = {})
         response = post('account/update_profile', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
       end

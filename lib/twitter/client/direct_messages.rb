@@ -17,7 +17,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/direct_messages
       # @example Return the 20 most recent direct messages sent to the authenticating user
       #   Twitter.direct_messages
-      def direct_messages(options={})
+      def direct_messages(options = {})
         response = get('direct_messages', options)
         format.to_s.downcase == 'xml' ? response['direct_messages'] : response
       end
@@ -37,7 +37,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/direct_messages/sent
       # @example Return the 20 most recent direct messages sent by the authenticating user
       #   Twitter.direct_messages_sent
-      def direct_messages_sent(options={})
+      def direct_messages_sent(options = {})
         response = get('direct_messages/sent', options)
         format.to_s.downcase == 'xml' ? response['direct_messages'] : response
       end
@@ -56,9 +56,9 @@ module Twitter
       # @example Send a direct message to @sferik from the authenticating user
       #   Twitter.direct_message_create("sferik", "I'm sending you this message via the Twitter Ruby Gem!")
       #   Twitter.direct_message_create(7505382, "I'm sending you this message via the Twitter Ruby Gem!")  # Same as above
-      def direct_message_create(user, text, options={})
+      def direct_message_create(user, text, options = {})
         merge_user_into_options!(user, options)
-        response = post('direct_messages/new', options.merge(:text => text))
+        response = post('direct_messages/new', options.merge(text: text))
         format.to_s.downcase == 'xml' ? response['direct_message'] : response
       end
 
@@ -75,7 +75,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/direct_messages/destroy/:id
       # @example Destroys the direct message with the ID 1825785544
       #   Twitter.direct_message_destroy(1825785544)
-      def direct_message_destroy(id, options={})
+      def direct_message_destroy(id, options = {})
         response = delete("direct_messages/destroy/#{id}", options)
         format.to_s.downcase == 'xml' ? response['direct_message'] : response
       end

@@ -1,17 +1,17 @@
 require 'faraday_middleware'
-Dir[File.expand_path('../../faraday/*.rb', __FILE__)].each{|f| require f}
+Dir[File.expand_path('../../faraday/*.rb', __FILE__)].each { |f| require f }
 
 module Twitter
   # @private
   module Connection
     private
 
-    def connection(raw=false)
+    def connection(raw = false)
       options = {
-        :headers => {'Accept' => "application/#{format}", 'User-Agent' => user_agent},
-        :proxy => proxy,
-        :ssl => {:verify => false},
-        :url => api_endpoint,
+        headers: { 'Accept' => "application/#{format}", 'User-Agent' => user_agent },
+        proxy: proxy,
+        ssl: { verify: false },
+        url: api_endpoint
       }
 
       Faraday::Connection.new(options) do |connection|

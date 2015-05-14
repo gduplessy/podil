@@ -11,8 +11,8 @@ class YouTubeG
       attr_reader :mime_type
       # *String*:: Specifies the URL for the media object.
       attr_reader :url
-      
-      alias :is_default? :default
+
+      alias_method :is_default?, :default
     end
   end
 end

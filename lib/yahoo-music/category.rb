@@ -11,14 +11,14 @@
 #         type = ("Genre"|"Theme"|"Era")
 #         videoCount = xs:int
 #         >
-# 
-#     Content: 
+#
+#     Content:
 #         ShortDescription?, LongDescription?, Artist*, Station*, Category*
 # </Category>
 
 module Yahoo
   module Music
-    class Category < Base      
+    class Category < Base
       attribute :id,    Integer
       attribute :name,  String
     end

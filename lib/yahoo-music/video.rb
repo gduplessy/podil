@@ -12,20 +12,20 @@
 #         title = xs:string
 #         typeID = xs:int
 #         >
-# 
-#     Content: 
+#
+#     Content:
 #         Image*, Artist*, Client*, Category*, Album*, Media*, Bumper?, PaymentLabel?, FlaggedWith*, ItemInfo?, xspf:track?, RecentlyPlayed?
 # </Video>
 
 module Yahoo
   module Music
-    class Video < Base      
+    class Video < Base
       attribute :id,        Integer
       attribute :title,     String
       attribute :duration,  Integer
       attribute :explicit,  Boolean
-      
-      attribute :copyright_year, Integer, :matcher => "copyrightYear"      
+
+      attribute :copyright_year, Integer, matcher: 'copyrightYear'
     end
   end
 end

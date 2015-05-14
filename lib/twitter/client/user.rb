@@ -16,7 +16,7 @@ module Twitter
       # @example Return extended information for @sferik
       #   Twitter.user("sferik")
       #   Twitter.user(7505382)  # Same as above
-      def user(user, options={})
+      def user(user, options = {})
         merge_user_into_options!(user, options)
         response = get('users/show', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
@@ -59,8 +59,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/users/search
       # @example Return users that match "Erik Michaels-Ober"
       #   Twitter.user_search("Erik Michaels-Ober")
-      def user_search(query, options={})
-        response = get('users/search', options.merge(:q => query))
+      def user_search(query, options = {})
+        response = get('users/search', options.merge(q: query))
         format.to_s.downcase == 'xml' ? response['users'] : response
       end
 
@@ -105,7 +105,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/users/profile_image/:screen_name
       # @example Return the URL for the 24px by 24px version of @sferik's profile image
       #   Twitter.profile_image("sferik", :size => 'mini')
-      def profile_image(screen_name, options={})
+      def profile_image(screen_name, options = {})
         clean_screen_name!(screen_name)
         get("users/profile_image/#{screen_name}", options, true).headers['location']
       end
@@ -135,7 +135,7 @@ module Twitter
       #   If getting this data of a protected user, you must authenticate (and be allowed to see that user).
       # @rate_limited true
       def friends(*args)
-        options = {:cursor => -1}
+        options = { cursor: -1 }
         options.merge!(args.last.is_a?(Hash) ? args.pop : {})
         user = args.first
         if user
@@ -172,7 +172,7 @@ module Twitter
       #   If getting this data of a protected user, you must authenticate (and be allowed to see that user).
       # @rate_limited true
       def followers(*args)
-        options = {:cursor => -1}
+        options = { cursor: -1 }
         options.merge!(args.last.is_a?(Hash) ? args.pop : {})
         user = args.first
         if user

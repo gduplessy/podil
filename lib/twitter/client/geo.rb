@@ -22,10 +22,10 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/geo/search
       # @example Return an array of places near the IP address 74.125.19.104
       #   Twitter.places_nearby(:ip => "74.125.19.104")
-      def places_nearby(options={})
+      def places_nearby(options = {})
         get('geo/search', options)['result']['places']
       end
-      alias :geo_search :places_nearby
+      alias_method :geo_search, :places_nearby
 
       # Locates places near the given coordinates which are similar in name
       #
@@ -43,7 +43,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/geo/similar_places
       # @example Return an array of places similar to Twitter HQ
       #   Twitter.places_similar(:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Twitter HQ")
-      def places_similar(options={})
+      def places_similar(options = {})
         get('geo/similar_places', options)['result']['places']
       end
 
@@ -63,7 +63,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/geo/reverse_geocode
       # @example Return an array of places within the specified region
       #   Twitter.reverse_geocode(:lat => "37.7821120598956", :long => "-122.400612831116")
-      def reverse_geocode(options={})
+      def reverse_geocode(options = {})
         get('geo/reverse_geocode', options)['result']['places']
       end
 
@@ -78,7 +78,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/geo/id/:place_id
       # @example Return all the information about Twitter HQ
       #   Twitter.place("247f43d441defc03")
-      def place(place_id, options={})
+      def place(place_id, options = {})
         get("geo/id/#{place_id}", options)
       end
 
@@ -98,7 +98,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/geo/place
       # @example Create a new place
       #   Twitter.place_create(:name => "@sferik's Apartment", :token => "22ff5b1f7159032cf69218c4d8bb78bc", :contained_within => "41bcb736f84a799e", :lat => "37.783699", :long => "-122.393581")
-      def place_create(options={})
+      def place_create(options = {})
         post('geo/place', options)
       end
     end

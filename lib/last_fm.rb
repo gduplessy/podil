@@ -18,4 +18,3 @@ require File.dirname(__FILE__) + '/last_fm/tag'
 require File.dirname(__FILE__) + '/last_fm/tastometer'
 require File.dirname(__FILE__) + '/last_fm/track'
 require File.dirname(__FILE__) + '/last_fm/user'
-

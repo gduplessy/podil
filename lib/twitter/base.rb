@@ -5,7 +5,7 @@ module Twitter
     #
     # @deprecated {Twitter::Base} is deprecated and will be permanently removed in the next major version. Please use {Twitter::Client} instead.
     # @return [Twitter::Client]
-    def client(options={})
+    def client(options = {})
       Twitter::Client.new(options)
     end
 

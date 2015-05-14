@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'xmlsimple'
 require 'net/http'
-$:.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'mbws/exceptions'
 require 'mbws/parsing'
 require 'mbws/relations'

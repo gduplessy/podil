@@ -12,13 +12,13 @@ require dir + 'httparty/cookie_hash'
 require dir + 'httparty/net_digest_auth'
 
 module HTTParty
-  VERSION          = "0.6.1".freeze
-  CRACK_DEPENDENCY = "0.1.8".freeze
+  VERSION          = '0.6.1'.freeze
+  CRACK_DEPENDENCY = '0.1.8'.freeze
 
   module AllowedFormatsDeprecation
     def const_missing(const)
       if const.to_s =~ /AllowedFormats$/
-        Kernel.warn("Deprecated: Use HTTParty::Parser::SupportedFormats")
+        Kernel.warn('Deprecated: Use HTTParty::Parser::SupportedFormats')
         HTTParty::Parser::SupportedFormats
       else
         super
@@ -33,8 +33,8 @@ module HTTParty
     base.send :include, HTTParty::ModuleInheritableAttributes
     base.send(:mattr_inheritable, :default_options)
     base.send(:mattr_inheritable, :default_cookies)
-    base.instance_variable_set("@default_options", {})
-    base.instance_variable_set("@default_cookies", CookieHash.new)
+    base.instance_variable_set('@default_options', {})
+    base.instance_variable_set('@default_cookies', CookieHash.new)
   end
 
   module ClassMethods
@@ -46,7 +46,7 @@ module HTTParty
     #     include HTTParty
     #     http_proxy 'http://foo.com', 80
     #   end
-    def http_proxy(addr=nil, port = nil)
+    def http_proxy(addr = nil, port = nil)
       default_options[:http_proxyaddr] = addr
       default_options[:http_proxyport] = port
     end
@@ -58,7 +58,7 @@ module HTTParty
     #     include HTTParty
     #     base_uri 'twitter.com'
     #   end
-    def base_uri(uri=nil)
+    def base_uri(uri = nil)
       return default_options[:base_uri] unless uri
       default_options[:base_uri] = HTTParty.normalize_base_uri(uri)
     end
@@ -70,7 +70,7 @@ module HTTParty
     #     basic_auth 'username', 'password'
     #   end
     def basic_auth(u, p)
-      default_options[:basic_auth] = {:username => u, :password => p}
+      default_options[:basic_auth] = { username: u, password: p }
     end
 
     # Allows setting digest authentication username and password.
@@ -80,7 +80,7 @@ module HTTParty
     #     digest_auth 'username', 'password'
     #   end
     def digest_auth(u, p)
-      default_options[:digest_auth] = {:username => u, :password => p}
+      default_options[:digest_auth] = { username: u, password: p }
     end
 
     # Allows setting default parameters to be appended to each request.
@@ -90,8 +90,8 @@ module HTTParty
     #     include HTTParty
     #     default_params :api_key => 'secret', :another => 'foo'
     #   end
-    def default_params(h={})
-      raise ArgumentError, 'Default params must be a hash' unless h.is_a?(Hash)
+    def default_params(h = {})
+      fail ArgumentError, 'Default params must be a hash' unless h.is_a?(Hash)
       default_options[:default_params] ||= {}
       default_options[:default_params].merge!(h)
     end
@@ -104,7 +104,7 @@ module HTTParty
     #     default_timeout 10
     #   end
     def default_timeout(t)
-      raise ArgumentError, 'Timeout must be an integer' unless t && t.is_a?(Integer)
+      fail ArgumentError, 'Timeout must be an integer' unless t && t.is_a?(Integer)
       default_options[:timeout] = t
     end
 
@@ -125,14 +125,14 @@ module HTTParty
     #     include HTTParty
     #     headers 'Accept' => 'text/html'
     #   end
-    def headers(h={})
-      raise ArgumentError, 'Headers must be a hash' unless h.is_a?(Hash)
+    def headers(h = {})
+      fail ArgumentError, 'Headers must be a hash' unless h.is_a?(Hash)
       default_options[:headers] ||= {}
       default_options[:headers].merge!(h)
     end
 
-    def cookies(h={})
-      raise ArgumentError, 'Cookies must be a hash' unless h.is_a?(Hash)
+    def cookies(h = {})
+      fail ArgumentError, 'Cookies must be a hash' unless h.is_a?(Hash)
       default_cookies.add_cookies(h)
     end
 
@@ -228,7 +228,7 @@ module HTTParty
     #   # Simple get with full url and query parameters
     #   # ie: http://foo.com/resource.json?limit=10
     #   Foo.get('http://foo.com/resource.json', :query => {:limit => 10})
-    def get(path, options={})
+    def get(path, options = {})
       perform_request Net::HTTP::Get, path, options
     end
 
@@ -244,53 +244,51 @@ module HTTParty
     #   # Simple post with full url using :query option,
     #   # which gets set as form data on the request.
     #   Foo.post('http://foo.com/resources', :query => {:bar => 'baz'})
-    def post(path, options={})
+    def post(path, options = {})
       perform_request Net::HTTP::Post, path, options
     end
 
     # Perform a PUT request to a path
-    def put(path, options={})
+    def put(path, options = {})
       perform_request Net::HTTP::Put, path, options
     end
 
     # Perform a DELETE request to a path
-    def delete(path, options={})
+    def delete(path, options = {})
       perform_request Net::HTTP::Delete, path, options
     end
 
     # Perform a HEAD request to a path
-    def head(path, options={})
+    def head(path, options = {})
       perform_request Net::HTTP::Head, path, options
     end
 
     # Perform an OPTIONS request to a path
-    def options(path, options={})
+    def options(path, options = {})
       perform_request Net::HTTP::Options, path, options
     end
 
-    def default_options #:nodoc:
-      @default_options
-    end
+    attr_reader :default_options
 
     private
 
-      def perform_request(http_method, path, options) #:nodoc:
-        options = default_options.dup.merge(options)
-        process_cookies(options)
-        Request.new(http_method, path, options).perform
-      end
+    def perform_request(http_method, path, options) #:nodoc:
+      options = default_options.dup.merge(options)
+      process_cookies(options)
+      Request.new(http_method, path, options).perform
+    end
 
-      def process_cookies(options) #:nodoc:
-        return unless options[:cookies] || default_cookies.any?
-        options[:headers] ||= headers.dup
-        options[:headers]["cookie"] = cookies.merge(options.delete(:cookies) || {}).to_cookie_string
-      end
+    def process_cookies(options) #:nodoc:
+      return unless options[:cookies] || default_cookies.any?
+      options[:headers] ||= headers.dup
+      options[:headers]['cookie'] = cookies.merge(options.delete(:cookies) || {}).to_cookie_string
+    end
 
-      def validate_format
-        if format && parser.respond_to?(:supports_format?) && !parser.supports_format?(format)
-          raise UnsupportedFormat, "'#{format.inspect}' Must be one of: #{parser.supported_formats.map{|f| f.to_s}.sort.join(', ')}"
-        end
+    def validate_format
+      if format && parser.respond_to?(:supports_format?) && !parser.supports_format?(format)
+        fail UnsupportedFormat, "'#{format.inspect}' Must be one of: #{parser.supported_formats.map(&:to_s).sort.join(', ')}"
       end
+    end
   end
 
   def self.normalize_base_uri(url) #:nodoc:
@@ -331,7 +329,6 @@ module HTTParty
   def self.options(*args)
     Basement.options(*args)
   end
-
 end
 
 require dir + 'httparty/core_extensions'

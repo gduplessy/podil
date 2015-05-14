@@ -44,7 +44,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/favorites/create/:id
       # @example Favorite the status with the ID 25938088801
       #   Twitter.favorite_create(25938088801)
-      def favorite_create(id, options={})
+      def favorite_create(id, options = {})
         response = post("favorites/create/#{id}", options)
         format.to_s.downcase == 'xml' ? response['status'] : response
       end
@@ -61,7 +61,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/favorites/destroy/:id
       # @example Un-favorite the status with the ID 25938088801
       #   Twitter.favorite_destroy(25938088801)
-      def favorite_destroy(id, options={})
+      def favorite_destroy(id, options = {})
         response = delete("favorites/destroy/#{id}", options)
         format.to_s.downcase == 'xml' ? response['status'] : response
       end

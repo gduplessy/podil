@@ -10,19 +10,19 @@
 #         trackCount = xs:int
 #         website = xs:string
 #         >
-# 
-#     Content: 
+#
+#     Content:
 #         Image*, Category*, Releases?, TopTracks?, TopSimilarArtists?, RadioStations?, Events?, Fans?, NewsArticles?, ReleaseReviews?, ShortBio?, FullBio?, ItemInfo?, Video*
 # </Artist>
 
 module Yahoo
   module Music
-    class Artist < Base      
+    class Artist < Base
       attribute :id,          Integer
       attribute :name,        String
-      attribute :sort_name,   String, :matcher => "sortName"
+      attribute :sort_name,   String, matcher: 'sortName'
       attribute :website,     String
-      
+
       attribute :releases,    Release
       attribute :categories,  Category
       attribute :videos,      Video

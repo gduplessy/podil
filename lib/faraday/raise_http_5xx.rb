@@ -8,11 +8,11 @@ module Faraday
       env[:response].on_complete do |response|
         case response[:status].to_i
         when 500
-          raise Twitter::InternalServerError, error_message(response, "Something is technically wrong.")
+          fail Twitter::InternalServerError, error_message(response, 'Something is technically wrong.')
         when 502
-          raise Twitter::BadGateway, error_message(response, "Twitter is down or being upgraded.")
+          fail Twitter::BadGateway, error_message(response, 'Twitter is down or being upgraded.')
         when 503
-          raise Twitter::ServiceUnavailable, error_message(response, "(__-){ Twitter is over capacity.")
+          fail Twitter::ServiceUnavailable, error_message(response, '(__-){ Twitter is over capacity.')
         end
       end
     end
@@ -24,8 +24,8 @@ module Faraday
 
     private
 
-    def self.error_message(response, body=nil)
-      "#{response[:method].to_s.upcase} #{response[:url].to_s}: #{response[:response_headers]['status']}:#{(' ' + body) if body} Check http://status.twitter.com/ for updates on the status of the Twitter service."
+    def self.error_message(response, body = nil)
+      "#{response[:method].to_s.upcase} #{response[:url]}: #{response[:response_headers]['status']}:#{(' ' + body) if body} Check http://status.twitter.com/ for updates on the status of the Twitter service."
     end
   end
 end

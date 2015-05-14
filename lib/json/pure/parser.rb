@@ -33,7 +33,7 @@ module JSON
       TRUE                  = /true/
       FALSE                 = /false/
       NULL                  = /null/
-      IGNORE                = %r(
+      IGNORE                = %r{
         (?:
          //[^\n\r]*[\n\r]| # line comments
          /\*               # c-style comments
@@ -41,12 +41,12 @@ module JSON
           [^*/]|        # normal chars
           /[^*]|        # slashes that do not start a nested comment
           \*[^/]|       # asterisks that do not end this comment
-          /(?=\*/)      # single slash before this comment's end 
+          /(?=\*/)      # single slash before this comment's end
          )*
            \*/               # the End of this comment
            |[ \t\r\n]+       # whitespaces: space, horicontal tab, lf, cr
         )+
-      )mx
+            }mx
 
       UNPARSED = Object.new
 
@@ -122,7 +122,7 @@ module JSON
         @array_class = opts[:array_class] || Array
       end
 
-      alias source string
+      alias_method :source, :string
 
       # Parses the current JSON string _source_ and returns the complete data
       # structure as a result.
@@ -132,20 +132,20 @@ module JSON
         until eos?
           case
           when scan(OBJECT_OPEN)
-            obj and raise ParserError, "source '#{peek(20)}' not in JSON!"
+            obj && fail(ParserError, "source '#{peek(20)}' not in JSON!")
             @current_nesting = 1
             obj = parse_object
           when scan(ARRAY_OPEN)
-            obj and raise ParserError, "source '#{peek(20)}' not in JSON!"
+            obj && fail(ParserError, "source '#{peek(20)}' not in JSON!")
             @current_nesting = 1
             obj = parse_array
           when skip(IGNORE)
-            ;
+
           else
-            raise ParserError, "source '#{peek(20)}' not in JSON!"
+            fail ParserError, "source '#{peek(20)}' not in JSON!"
           end
         end
-        obj or raise ParserError, "source did not contain any JSON!"
+        obj || fail(ParserError, 'source did not contain any JSON!')
         obj
       end
 
@@ -153,17 +153,15 @@ module JSON
 
       # Unescape characters in strings.
       UNESCAPE_MAP = Hash.new { |h, k| h[k] = k.chr }
-      UNESCAPE_MAP.update({
-        ?"  => '"',
-        ?\\ => '\\',
-        ?/  => '/',
-        ?b  => "\b",
-        ?f  => "\f",
-        ?n  => "\n",
-        ?r  => "\r",
-        ?t  => "\t",
-        ?u  => nil, 
-      })
+      UNESCAPE_MAP.update('"'  => '"',
+                          '\\' => '\\',
+                          '/'  => '/',
+                          'b'  => "\b",
+                          'f'  => "\f",
+                          'n'  => "\n",
+                          'r'  => "\r",
+                          't'  => "\t",
+                          'u'  => nil)
 
       def parse_string
         if scan(STRING)
@@ -174,7 +172,7 @@ module JSON
             else # \uXXXX
               bytes = ''
               i = 0
-              while c[6 * i] == ?\\ && c[6 * i + 1] == ?u
+              while c[6 * i] == '\\' && c[6 * i + 1] == 'u'
                 bytes << c[6 * i + 2, 2].to_i(16) << c[6 * i + 4, 2].to_i(16)
                 i += 1
               end
@@ -228,7 +226,7 @@ module JSON
       end
 
       def parse_array
-        raise NestingError, "nesting of #@current_nesting is too deep" if
+        fail NestingError, "nesting of #{@current_nesting} is too deep" if
           @max_nesting.nonzero? && @current_nesting > @max_nesting
         result = @array_class.new
         delim = false
@@ -241,26 +239,26 @@ module JSON
             if scan(COLLECTION_DELIMITER)
               delim = true
             elsif match?(ARRAY_CLOSE)
-              ;
+
             else
-              raise ParserError, "expected ',' or ']' in array at '#{peek(20)}'!"
+              fail ParserError, "expected ',' or ']' in array at '#{peek(20)}'!"
             end
           when scan(ARRAY_CLOSE)
             if delim
-              raise ParserError, "expected next element in array at '#{peek(20)}'!"
+              fail ParserError, "expected next element in array at '#{peek(20)}'!"
             end
             break
           when skip(IGNORE)
-            ;
+
           else
-            raise ParserError, "unexpected token in array at '#{peek(20)}'!"
+            fail ParserError, "unexpected token in array at '#{peek(20)}'!"
           end
         end
         result
       end
 
       def parse_object
-        raise NestingError, "nesting of #@current_nesting is too deep" if
+        fail NestingError, "nesting of #{@current_nesting} is too deep" if
           @max_nesting.nonzero? && @current_nesting > @max_nesting
         result = @object_class.new
         delim = false
@@ -269,7 +267,7 @@ module JSON
           when (string = parse_string) != UNPARSED
             skip(IGNORE)
             unless scan(PAIR_DELIMITER)
-              raise ParserError, "expected ':' in object at '#{peek(20)}'!"
+              fail ParserError, "expected ':' in object at '#{peek(20)}'!"
             end
             skip(IGNORE)
             unless (value = parse_value).equal? UNPARSED
@@ -279,27 +277,27 @@ module JSON
               if scan(COLLECTION_DELIMITER)
                 delim = true
               elsif match?(OBJECT_CLOSE)
-                ;
+
               else
-                raise ParserError, "expected ',' or '}' in object at '#{peek(20)}'!"
+                fail ParserError, "expected ',' or '}' in object at '#{peek(20)}'!"
               end
             else
-              raise ParserError, "expected value in object at '#{peek(20)}'!"
+              fail ParserError, "expected value in object at '#{peek(20)}'!"
             end
           when scan(OBJECT_CLOSE)
             if delim
-              raise ParserError, "expected next name, value pair in object at '#{peek(20)}'!"
+              fail ParserError, "expected next name, value pair in object at '#{peek(20)}'!"
             end
-            if @create_id and klassname = result[@create_id]
+            if @create_id && klassname = result[@create_id]
               klass = JSON.deep_const_get klassname
-              break unless klass and klass.json_creatable?
+              break unless klass && klass.json_creatable?
               result = klass.json_create(result)
             end
             break
           when skip(IGNORE)
-            ;
+
           else
-            raise ParserError, "unexpected token in object at '#{peek(20)}'!"
+            fail ParserError, "unexpected token in object at '#{peek(20)}'!"
           end
         end
         result

@@ -12,20 +12,20 @@
 #         title = xs:string
 #         typeID = xs:int
 #         >
-# 
-#     Content: 
+#
+#     Content:
 #         Image*, Price*, Track*, Artist*, Category*, Fan*, Review*, ItemInfo?
 # </Release>
 
 module Yahoo
   module Music
-    class Release < Base      
+    class Release < Base
       attribute :id,          Integer
       attribute :title,       String
-      attribute :upc,         String,  :matcher => "UPC"
-      attribute :explicit,    Boolean, :matcher => "explicit"
-      attribute :released_on, Date,    :matcher => "releaseDate"
-      
+      attribute :upc,         String,  matcher: 'UPC'
+      attribute :explicit,    Boolean, matcher: 'explicit'
+      attribute :released_on, Date,    matcher: 'releaseDate'
+
       attribute :artists,     Artist
       attribute :categories,  Category
       attribute :reviews,     Review

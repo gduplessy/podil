@@ -16,7 +16,7 @@ module Twitter
       # @example Report @spam for spam
       #   Twitter.report_spam("spam")
       #   Twitter.report_spam(14589771) # Same as above
-      def report_spam(user, options={})
+      def report_spam(user, options = {})
         merge_user_into_options!(user, options)
         response = post('report_spam', options)
         format.to_s.downcase == 'xml' ? response['user'] : response

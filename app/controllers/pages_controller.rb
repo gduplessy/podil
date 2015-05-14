@@ -9,30 +9,29 @@ class PagesController < ApplicationController
 
   def home
     client   = YouTubeG::Client.new
-    @youtube = client.videos_by(:tags => ['music'],:time => :today, :per_page => 4)
+    @youtube = client.videos_by(tags: ['music'], time: :today, per_page: 4)
   end
 
   def contact
-    @title = "Contact Us"
+    @title = 'Contact Us'
   end
 
   def about
-    @title = "Who are we?"
+    @title = 'Who are we?'
   end
 
   def help
-    @title = "Hop hop and away!"
+    @title = 'Hop hop and away!'
   end
 
   def search
-    @title    = "Results"
+    @title    = 'Results'
     search    = params['q']
     client    = YouTubeG::Client.new
-    @youtube  = client.videos_by(:query => "#{search}", :page => 1, :per_page => 1)
+    @youtube  = client.videos_by(query: "#{search}", page: 1, per_page: 1)
     @msearch  = Search.music_hash
-    lfm       = LastFM.new()
-    @similar  = lfm.artist.getSimilar(:artist => search, :limit => 5)
-    @simitr   = lfm.track.getSimilar(:track => 'tik tok', :artist => 'ke$ha', :limit => 5)
+    lfm       = LastFM.new
+    @similar  = lfm.artist.getSimilar(artist: search, limit: 5)
+    @simitr   = lfm.track.getSimilar(track: 'tik tok', artist: 'ke$ha', limit: 5)
   end
-
 end

@@ -11,23 +11,23 @@
 #         rights = xs:int
 #         title = xs:string
 #         >
-# 
-#      Content: 
+#
+#      Content:
 #          Image*, Price*, Track*, Artist*, Category*, Fan*, Review*, ItemInfo?
 # </Track>
 
 module Yahoo
   module Music
-    class Track < Base      
+    class Track < Base
       attribute :id,           Integer
       attribute :title,        String
       attribute :duration,     Integer
       attribute :explicit,     Boolean
-      
-      attribute :release_year, Integer, :matcher => "releaseYear"
-      attribute :track_number, Integer, :matcher => "trackNumber"
-      attribute :disc_number,  Integer, :matcher => "discNumber"
-      
+
+      attribute :release_year, Integer, matcher: 'releaseYear'
+      attribute :track_number, Integer, matcher: 'trackNumber'
+      attribute :disc_number,  Integer, matcher: 'discNumber'
+
       attribute :artists,       Artist
       attribute :releases,      Release
     end

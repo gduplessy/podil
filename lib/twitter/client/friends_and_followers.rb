@@ -28,12 +28,12 @@ module Twitter
       #   If getting this data of a protected user, you must authenticate (and be allowed to see that user).
       # @rate_limited true
       def friend_ids(*args)
-        options = {:cursor => -1}
+        options = { cursor: -1 }
         options.merge!(args.last.is_a?(Hash) ? args.pop : {})
         user = args.first
         merge_user_into_options!(user, options)
         response = get('friends/ids', options)
-        format.to_s.downcase == 'xml' ? Hashie::Mash.new(:ids => response['id_list']['ids']['id'].map{|id| id.to_i}) : response
+        format.to_s.downcase == 'xml' ? Hashie::Mash.new(ids: response['id_list']['ids']['id'].map(&:to_i)) : response
       end
 
       # @todo Move the code that makes the parsed XML consistent with the parsed JSON into MultiXML.
@@ -62,12 +62,12 @@ module Twitter
       #   If getting this data of a protected user, you must authenticate (and be allowed to see that user).
       # @rate_limited true
       def follower_ids(*args)
-        options = {:cursor => -1}
+        options = { cursor: -1 }
         options.merge!(args.last.is_a?(Hash) ? args.pop : {})
         user = args.first
         merge_user_into_options!(user, options)
         response = get('followers/ids', options)
-        format.to_s.downcase == 'xml' ? Hashie::Mash.new(:ids => response['id_list']['ids']['id'].map{|id| id.to_i}) : response
+        format.to_s.downcase == 'xml' ? Hashie::Mash.new(ids: response['id_list']['ids']['id'].map(&:to_i)) : response
       end
     end
   end

@@ -13,13 +13,13 @@ module HTTParty
 
     attr_accessor :http_method, :path, :options, :last_response, :redirect
 
-    def initialize(http_method, path, o={})
+    def initialize(http_method, path, o = {})
       self.http_method = http_method
       self.path = path
       self.options = {
-        :limit => o.delete(:no_follow) ? 1 : 5,
-        :default_params => {},
-        :parser => Parser
+        limit: o.delete(:no_follow) ? 1 : 5,
+        default_params: {},
+        parser: Parser
       }.merge(o)
     end
 
@@ -31,12 +31,10 @@ module HTTParty
       new_uri = path.relative? ? URI.parse("#{options[:base_uri]}#{path}") : path
 
       # avoid double query string on redirects [#12]
-      unless redirect
-        new_uri.query = query_string(new_uri)
-      end
+      new_uri.query = query_string(new_uri) unless redirect
 
       unless SupportedURISchemes.include? new_uri.class
-        raise UnsupportedURIScheme, "'#{new_uri}' Must be HTTP or HTTPS"
+        fail UnsupportedURIScheme, "'#{new_uri}' Must be HTTP or HTTPS"
       end
 
       new_uri
@@ -76,9 +74,7 @@ module HTTParty
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
 
-      if options[:debug_output]
-        http.set_debug_output(options[:debug_output])
-      end
+      http.set_debug_output(options[:debug_output]) if options[:debug_output]
 
       http
     end
@@ -113,7 +109,7 @@ module HTTParty
 
     def setup_digest_auth
       res = http.head(uri.request_uri, options[:headers])
-      if res['www-authenticate'] != nil && res['www-authenticate'].length > 0
+      if !res['www-authenticate'].nil? && res['www-authenticate'].length > 0
         @raw_request.digest_auth(username, password, res)
       end
     end
@@ -167,11 +163,11 @@ module HTTParty
 
     # Inspired by Ruby 1.9
     def handle_deflation
-      case last_response["content-encoding"]
-      when "gzip"
+      case last_response['content-encoding']
+      when 'gzip'
         body_io = StringIO.new(last_response.body)
         last_response.body.replace Zlib::GzipReader.new(body_io).read
-      when "deflate"
+      when 'deflate'
         last_response.body.replace Zlib::Inflate.inflate(last_response.body)
       end
     end
@@ -182,7 +178,7 @@ module HTTParty
 
     def capture_cookies(response)
       return unless response['Set-Cookie']
-      cookies_hash = HTTParty::CookieHash.new()
+      cookies_hash = HTTParty::CookieHash.new
       cookies_hash.add_cookies(options[:headers]['Cookie']) if options[:headers] && options[:headers]['Cookie']
       cookies_hash.add_cookies(response['Set-Cookie'])
       options[:headers] ||= {}
@@ -198,15 +194,15 @@ module HTTParty
       end
     end
 
-      def validate
-        raise HTTParty::RedirectionTooDeep.new(last_response), 'HTTP redirects too deep' if options[:limit].to_i <= 0
-        raise ArgumentError, 'only get, post, put, delete, head, and options methods are supported' unless SupportedHTTPMethods.include?(http_method)
-        raise ArgumentError, ':headers must be a hash' if options[:headers] && !options[:headers].is_a?(Hash)
-        raise ArgumentError, 'only one authentication method, :basic_auth or :digest_auth may be used at a time' if options[:basic_auth] && options[:digest_auth]
-        raise ArgumentError, ':basic_auth must be a hash' if options[:basic_auth] && !options[:basic_auth].is_a?(Hash)
-        raise ArgumentError, ':digest_auth must be a hash' if options[:digest_auth] && !options[:digest_auth].is_a?(Hash)
-        raise ArgumentError, ':query must be hash if using HTTP Post' if post? && !options[:query].nil? && !options[:query].is_a?(Hash)
-      end
+    def validate
+      fail HTTParty::RedirectionTooDeep.new(last_response), 'HTTP redirects too deep' if options[:limit].to_i <= 0
+      fail ArgumentError, 'only get, post, put, delete, head, and options methods are supported' unless SupportedHTTPMethods.include?(http_method)
+      fail ArgumentError, ':headers must be a hash' if options[:headers] && !options[:headers].is_a?(Hash)
+      fail ArgumentError, 'only one authentication method, :basic_auth or :digest_auth may be used at a time' if options[:basic_auth] && options[:digest_auth]
+      fail ArgumentError, ':basic_auth must be a hash' if options[:basic_auth] && !options[:basic_auth].is_a?(Hash)
+      fail ArgumentError, ':digest_auth must be a hash' if options[:digest_auth] && !options[:digest_auth].is_a?(Hash)
+      fail ArgumentError, ':query must be hash if using HTTP Post' if post? && !options[:query].nil? && !options[:query].is_a?(Hash)
+    end
 
     def post?
       Net::HTTP::Post == http_method

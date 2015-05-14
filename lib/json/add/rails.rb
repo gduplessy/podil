@@ -1,8 +1,8 @@
 # This file contains implementations of rails custom objects for
 # serialisation/deserialisation.
 
-unless Object.const_defined?(:JSON) and ::JSON.const_defined?(:JSON_LOADED) and
-  ::JSON::JSON_LOADED
+unless Object.const_defined?(:JSON) && ::JSON.const_defined?(:JSON_LOADED) &&
+       ::JSON::JSON_LOADED
   require 'json'
 end
 
@@ -55,4 +55,3 @@ end
 #
 # 2. { 'foo' => /bar/mix }.to_json # => "{foo: /bar/mix}"
 #    This isn't even valid Javascript.
-

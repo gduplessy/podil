@@ -19,8 +19,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/:user/:list_id/subscribers
       # @example Return the subscribers of of @sferik's "presidents" list
       #   Twitter.list_subscribers("sferik", "presidents")
-      def list_subscribers(screen_name, list_id, options={})
-        options = {:cursor => -1}.merge(options)
+      def list_subscribers(screen_name, list_id, options = {})
+        options = { cursor: -1 }.merge(options)
         clean_screen_name!(screen_name)
         response = get("#{screen_name}/#{list_id}/subscribers", options)
         format.to_s.downcase == 'xml' ? response['users_list'] : response
@@ -39,7 +39,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/:user/:list_id/subscribers
       # @example Subscribe to @sferik's "presidents" list
       #   Twitter.list_subscribe("sferik", "presidents")
-      def list_subscribe(screen_name, list_id, options={})
+      def list_subscribe(screen_name, list_id, options = {})
         clean_screen_name!(screen_name)
         response = post("#{screen_name}/#{list_id}/subscribers", options)
         format.to_s.downcase == 'xml' ? response['list'] : response
@@ -58,7 +58,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/delete/:user/:list_id/subscribers
       # @example Unsubscribe from @sferik's "presidents" list
       #   Twitter.list_unsubscribe("sferik", "presidents")
-      def list_unsubscribe(screen_name, list_id, options={})
+      def list_unsubscribe(screen_name, list_id, options = {})
         clean_screen_name!(screen_name)
         response = delete("#{screen_name}/#{list_id}/subscribers", options)
         format.to_s.downcase == 'xml' ? response['list'] : response
@@ -78,7 +78,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/:user/:list_id/subscribers/:id
       # @example Check if @BarackObama is a subscriber of @sferik's "presidents" list
       #   Twitter.is_subscriber?("sferik", "presidents", 813286)
-      def is_subscriber?(screen_name, list_id, id, options={})
+      def is_subscriber?(screen_name, list_id, id, options = {})
         clean_screen_name!(screen_name)
         begin
           get("#{screen_name}/#{list_id}/subscribers/#{id}", options)

@@ -15,15 +15,15 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/friendships/create
       # @example Follow @sferik
       #   Twitter.follow("sferik")
-      def follow(user, options={})
+      def follow(user, options = {})
         merge_user_into_options!(user, options)
         # Twitter always turns on notifications if the "follow" option is present, even if it's set to false
         # so only send follow if it's true
-        options.merge!(:follow => true) if options.delete(:follow)
+        options.merge!(follow: true) if options.delete(:follow)
         response = post('friendships/create', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
-      alias :friendship_create :follow
+      alias_method :friendship_create, :follow
 
       # Allows the authenticating user to unfollow the specified user
       #
@@ -37,12 +37,12 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/friendships/destroy
       # @example Unfollow @sferik
       #   Twitter.unfollow("sferik")
-      def unfollow(user, options={})
+      def unfollow(user, options = {})
         merge_user_into_options!(user, options)
         response = delete('friendships/destroy', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
-      alias :friendship_destroy :unfollow
+      alias_method :friendship_destroy, :unfollow
 
       # Test for the existence of friendship between two users
       #
@@ -57,8 +57,8 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/friendships/exists
       # @example Return true if @sferik follows @pengwynn
       #   Twitter.friendship_exists?("sferik", "pengwynn")
-      def friendship_exists?(user_a, user_b, options={})
-        response = get('friendships/exists', options.merge(:user_a => user_a, :user_b => user_b))
+      def friendship_exists?(user_a, user_b, options = {})
+        response = get('friendships/exists', options.merge(user_a: user_a, user_b: user_b))
         format.to_s.downcase == 'xml' ? !%w(0 false).include?(response['friends']) : response
       end
 
@@ -78,10 +78,10 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/friendships/show
       # @example Return the relationship between @sferik and @pengwynn
       #   Twitter.friendship("sferik", "pengwynn")
-      def friendship(options={})
+      def friendship(options = {})
         get('friendships/show', options)['relationship']
       end
-      alias :friendship_show :friendship
+      alias_method :friendship_show, :friendship
 
       # Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user
       #
@@ -95,10 +95,10 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/friendships/incoming
       # @example Return an array of numeric IDs for every user who has a pending request to follow the authenticating user
       #   Twitter.friendships_incoming
-      def friendships_incoming(options={})
-        options = {:cursor => -1}.merge(options)
+      def friendships_incoming(options = {})
+        options = { cursor: -1 }.merge(options)
         response = get('friendships/incoming', options)
-        format.to_s.downcase == 'xml' ? Hashie::Mash.new(:ids => response['id_list']['ids']['id'].map{|id| id.to_i}) : response
+        format.to_s.downcase == 'xml' ? Hashie::Mash.new(ids: response['id_list']['ids']['id'].map(&:to_i)) : response
       end
 
       # Returns an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request
@@ -113,10 +113,10 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/friendships/outgoing
       # @example Return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request
       #   Twitter.friendships_outgoing
-      def friendships_outgoing(options={})
-        options = {:cursor => -1}.merge(options)
+      def friendships_outgoing(options = {})
+        options = { cursor: -1 }.merge(options)
         response = get('friendships/outgoing', options)
-        format.to_s.downcase == 'xml' ? Hashie::Mash.new(:ids => response['id_list']['ids']['id'].map{|id| id.to_i}) : response
+        format.to_s.downcase == 'xml' ? Hashie::Mash.new(ids: response['id_list']['ids']['id'].map(&:to_i)) : response
       end
     end
   end

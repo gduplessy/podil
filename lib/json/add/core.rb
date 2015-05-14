@@ -1,8 +1,8 @@
 # This file contains implementations of ruby core's custom objects for
 # serialisation/deserialisation.
 
-unless Object.const_defined?(:JSON) and ::JSON.const_defined?(:JSON_LOADED) and
-  ::JSON::JSON_LOADED
+unless Object.const_defined?(:JSON) && ::JSON.const_defined?(:JSON_LOADED) &&
+       ::JSON::JSON_LOADED
   require 'json'
 end
 require 'date'
@@ -11,7 +11,7 @@ class Symbol
   def to_json(*a)
     {
       JSON.create_id => self.class.name,
-      's' => to_s,
+      's' => to_s
     }.to_json(*a)
   end
 
@@ -46,7 +46,7 @@ class Date
     civil(*object.values_at('y', 'm', 'd', 'sg'))
   end
 
-  alias start sg unless method_defined?(:start)
+  alias_method :start, :sg unless method_defined?(:start)
 
   def to_json(*args)
     {
@@ -54,7 +54,7 @@ class Date
       'y' => year,
       'm' => month,
       'd' => day,
-      'sg' => start,
+      'sg' => start
     }.to_json(*args)
   end
 end
@@ -63,7 +63,7 @@ class DateTime
   def self.json_create(object)
     args = object.values_at('y', 'm', 'd', 'H', 'M', 'S')
     of_a, of_b = object['of'].split('/')
-    if of_b and of_b != '0'
+    if of_b && of_b != '0'
       args << Rational(of_a.to_i, of_b.to_i)
     else
       args << of_a
@@ -72,7 +72,7 @@ class DateTime
     civil(*args)
   end
 
-  alias start sg unless method_defined?(:start)
+  alias_method :start, :sg unless method_defined?(:start)
 
   def to_json(*args)
     {
@@ -84,7 +84,7 @@ class DateTime
       'M' => min,
       'S' => sec,
       'of' => offset.to_s,
-      'sg' => start,
+      'sg' => start
     }.to_json(*args)
   end
 end
@@ -97,7 +97,7 @@ class Range
   def to_json(*args)
     {
       JSON.create_id   => self.class.name,
-      'a'         => [ first, last, exclude_end? ]
+      'a'         => [first, last, exclude_end?]
     }.to_json(*args)
   end
 end
@@ -109,10 +109,10 @@ class Struct
 
   def to_json(*args)
     klass = self.class.name
-    klass.to_s.empty? and raise JSON::JSONError, "Only named structs are supported!"
+    klass.to_s.empty? && fail(JSON::JSONError, 'Only named structs are supported!')
     {
       JSON.create_id => klass,
-      'v'     => values,
+      'v'     => values
     }.to_json(*args)
   end
 end
@@ -128,7 +128,7 @@ class Exception
     {
       JSON.create_id => self.class.name,
       'm'   => message,
-      'b' => backtrace,
+      'b' => backtrace
     }.to_json(*args)
   end
 end
@@ -142,7 +142,7 @@ class Regexp
     {
       JSON.create_id => self.class.name,
       'o' => options,
-      's' => source,
+      's' => source
     }.to_json
   end
 end

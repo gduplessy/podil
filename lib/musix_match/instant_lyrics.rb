@@ -8,7 +8,7 @@ module MusixMatch
       end
 
       def found?
-        @lyrics.is_a?(MusixMatch::Models::Lyrics)      
+        @lyrics.is_a?(MusixMatch::Models::Lyrics)
       end
     end
 
@@ -24,7 +24,7 @@ module MusixMatch
       end
 
       def search_track
-        result = MusixMatch.search_track(:q => @q, :f_has_lyrics => 1)
+        result = MusixMatch.search_track(q: @q, f_has_lyrics: 1)
         if result.status_code == 200 && lyrics = result.track_list.first
           lyrics.track_id
         end

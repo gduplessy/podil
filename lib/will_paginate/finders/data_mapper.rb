@@ -5,16 +5,14 @@ module WillPaginate::Finders
   module DataMapper
     include WillPaginate::Finders::Base
 
-  protected
-    
-    def wp_query(options, pager, args, &block) #:nodoc
-      find_options = options.except(:count).update(:offset => pager.offset, :limit => pager.per_page) 
+    protected
+
+    def wp_query(options, pager, _args, &block) #:nodoc
+      find_options = options.except(:count).update(offset: pager.offset, limit: pager.per_page)
 
       pager.replace all(find_options, &block)
-      
-      unless pager.total_entries
-        pager.total_entries = wp_count(options)
-      end
+
+      pager.total_entries = wp_count(options) unless pager.total_entries
     end
 
     def wp_count(options) #:nodoc
@@ -22,7 +20,7 @@ module WillPaginate::Finders
       # merge the hash found in :count
       count_options.update options[:count] if options[:count]
 
-      count_options.empty?? count() : count(count_options)
+      count_options.empty? ? count : count(count_options)
     end
   end
 end

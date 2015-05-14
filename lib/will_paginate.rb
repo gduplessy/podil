@@ -10,14 +10,12 @@ require 'will_paginate/deprecation'
 module WillPaginate
 end
 
-if defined?(::Rails::Railtie)
-  require 'will_paginate/railtie'
-end
+require 'will_paginate/railtie' if defined?(::Rails::Railtie)
 
 if defined?(::Merb::Plugins)
   require 'will_paginate/view_helpers/merb'
   # auto-load the right ORM adapter
-  if adapter = { :datamapper => 'data_mapper', :activerecord => 'active_record', :sequel => 'sequel' }[Merb.orm]
+  if adapter = { datamapper: 'data_mapper', activerecord: 'active_record', sequel: 'sequel' }[Merb.orm]
     require "will_paginate/finders/#{adapter}"
   end
 end

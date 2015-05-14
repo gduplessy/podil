@@ -21,7 +21,7 @@ unless Hash.instance_methods.include_method? :except
       rejected = Set.new(respond_to?(:convert_key) ? keys.map { |key| convert_key(key) } : keys)
       reject { |key,| rejected.include?(key) }
     end
- 
+
     # Replaces the hash without only the given keys.
     def except!(*keys)
       replace(except(*keys))
@@ -48,10 +48,10 @@ unless String.instance_methods.include_method? :constantize
   String.class_eval do
     def constantize
       unless /\A(?:::)?([A-Z]\w*(?:::[A-Z]\w*)*)\z/ =~ self
-        raise NameError, "#{self.inspect} is not a valid constant name!"
+        fail NameError, "#{inspect} is not a valid constant name!"
       end
 
-      Object.module_eval("::#{$1}", __FILE__, __LINE__)
+      Object.module_eval("::#{Regexp.last_match(1)}", __FILE__, __LINE__)
     end
   end
 end
@@ -59,11 +59,11 @@ end
 unless String.instance_methods.include_method? :underscore
   String.class_eval do
     def underscore
-      self.to_s.gsub(/::/, '/').
-        gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-        gsub(/([a-z\d])([A-Z])/,'\1_\2').
-        tr("-", "_").
-        downcase
+      to_s.gsub(/::/, '/')
+        .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+        .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+        .tr('-', '_')
+        .downcase
     end
   end
 end

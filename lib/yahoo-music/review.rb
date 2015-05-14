@@ -11,21 +11,21 @@
 
 module Yahoo
   module Music
-    class Review < Base      
+    class Review < Base
       attr_reader :content
-      
+
       attribute :id,            Integer
       attribute :source,        String
-      attribute :published_on,  Date, :matcher => "publishDate"
+      attribute :published_on,  Date, matcher: 'publishDate'
       attribute :website,       String
-      
+
       def initialize(xml)
         @content = xml.inner_html
         super
       end
-      
+
       def to_s
-        self.content
+        content
       end
     end
   end

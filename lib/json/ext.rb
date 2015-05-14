@@ -6,7 +6,7 @@ module JSON
   module Ext
     require 'json/ext/parser'
     require 'json/ext/generator'
-    $DEBUG and warn "Using c extension for JSON."
+    $DEBUG && warn('Using c extension for JSON.')
     JSON.parser = Parser
     JSON.generator = Generator
   end

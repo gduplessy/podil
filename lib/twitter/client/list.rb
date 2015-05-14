@@ -20,9 +20,9 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/:user/lists
       # @example Create a list named "presidents"
       #   Twitter.list_create("sferik", "presidents")
-      def list_create(screen_name, name, options={})
+      def list_create(screen_name, name, options = {})
         clean_screen_name!(screen_name)
-        response = post("#{screen_name}/lists", options.merge(:name => name))
+        response = post("#{screen_name}/lists", options.merge(name: name))
         format.to_s.downcase == 'xml' ? response['list'] : response
       end
 
@@ -41,7 +41,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/post/:user/lists/:id
       # @example Update the "presidents" list to have the description "Presidents of the United States of America"
       #   Twitter.list_update("sferik", "presidents", :description => "Presidents of the United States of America")
-      def list_update(screen_name, name, options={})
+      def list_update(screen_name, name, options = {})
         clean_screen_name!(screen_name)
         response = put("#{screen_name}/lists/#{name}", options)
         format.to_s.downcase == 'xml' ? response['list'] : response
@@ -68,7 +68,7 @@ module Twitter
       # @authenticated true
       # @rate_limited true
       def lists(*args)
-        options = {:cursor => -1}
+        options = { cursor: -1 }
         options.merge!(args.last.is_a?(Hash) ? args.pop : {})
         screen_name = args.first
         if screen_name
@@ -94,7 +94,7 @@ module Twitter
       # @see http://dev.twitter.com/doc/get/:user/lists/:id
       # @example Show @sferik's "presidents" list
       #   Twitter.list("sferik", "presidents")
-      def list(screen_name, id, options={})
+      def list(screen_name, id, options = {})
         clean_screen_name!(screen_name)
         response = get("#{screen_name}/lists/#{id}", options)
         format.to_s.downcase == 'xml' ? response['list'] : response
@@ -114,7 +114,7 @@ module Twitter
       # @example Delete @sferik's "presidents" list
       #   Twitter.list_delete("sferik", "presidents")
       # @todo Overload the method to allow fetching of the authenticated user's screen name from configuration.
-      def list_delete(screen_name, id, options={})
+      def list_delete(screen_name, id, options = {})
         clean_screen_name!(screen_name)
         response = delete("#{screen_name}/lists/#{id}", options)
         format.to_s.downcase == 'xml' ? response['list'] : response
@@ -138,7 +138,7 @@ module Twitter
       # @example Show tweet timeline for members of @sferik's "presidents" list
       #   Twitter.list_timeline("sferik", "presidents")
       # @todo Overload the method to allow fetching of the authenticated user's screen name from configuration.
-      def list_timeline(screen_name, name, options={})
+      def list_timeline(screen_name, name, options = {})
         clean_screen_name!(screen_name)
         response = get("#{screen_name}/lists/#{name}/statuses", options)
         format.to_s.downcase == 'xml' ? response['statuses'] : response
@@ -157,8 +157,8 @@ module Twitter
       # @example List the lists that @sferik has been added to
       #   Twitter.memberships("sferik")
       # @todo Overload the method to allow fetching of the authenticated user's screen name from configuration.
-      def memberships(screen_name, options={})
-        options = {:cursor => -1}.merge(options)
+      def memberships(screen_name, options = {})
+        options = { cursor: -1 }.merge(options)
         clean_screen_name!(screen_name)
         response = get("#{screen_name}/lists/memberships", options)
         format.to_s.downcase == 'xml' ? response['lists_list'] : response
@@ -177,8 +177,8 @@ module Twitter
       # @example List the lists that @sferik follows
       #   Twitter.subscriptions("sferik")
       # @todo Overload the method to allow fetching of the authenticated user's screen name from configuration.
-      def subscriptions(screen_name, options={})
-        options = {:cursor => -1}.merge(options)
+      def subscriptions(screen_name, options = {})
+        options = { cursor: -1 }.merge(options)
         clean_screen_name!(screen_name)
         response = get("#{screen_name}/lists/subscriptions", options)
         format.to_s.downcase == 'xml' ? response['lists_list'] : response

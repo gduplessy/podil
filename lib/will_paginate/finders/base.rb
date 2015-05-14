@@ -3,7 +3,7 @@ require 'will_paginate/core_ext'
 module WillPaginate
   module Finders
     # = Database-agnostic finder module
-    # 
+    #
     # Out of the box, will_paginate supports hooking in several ORMs to
     # provide paginating finders based on their API. As of this writing, the
     # supported libraries are:
@@ -24,7 +24,7 @@ module WillPaginate
     # pagination only makes sense with ordered sets. Without the order clause,
     # databases aren't required to do consistent ordering when performing
     # <tt>SELECT</tt> queries.
-    # 
+    #
     # Ordering by a field for which many records share the same value (e.g.
     # "status") can still result in incorrect ordering with some databases (MS
     # SQL and Postgres for instance). With these databases it's recommend that
@@ -39,11 +39,11 @@ module WillPaginate
       def per_page
         @per_page ||= 30
       end
-      
+
       def per_page=(limit)
         @per_page = limit.to_i
       end
-      
+
       # This is the main paginating finder.
       #
       # == Special parameters for paginating finders
@@ -76,37 +76,36 @@ module WillPaginate
       # {Jamis Buck describes this}[http://weblog.jamisbuck.org/2007/4/6/faking-cursors-in-activerecord]
       # and also uses a more efficient way for MySQL.
       def paginated_each(options = {}, &block)
-        options = { :order => 'id', :page => 1 }.merge options
+        options = { order: 'id', page: 1 }.merge options
         options[:page] = options[:page].to_i
         options[:total_entries] = 0 # skip the individual count queries
         total = 0
-        
-        begin 
+
+        begin
           collection = paginate(options)
           total += collection.each(&block).size
           options[:page] += 1
         end until collection.size < collection.per_page
-        
+
         total
       end
-      
-      protected
-        
-        def wp_parse_options(options) #:nodoc:
-          raise ArgumentError, 'parameter hash expected' unless Hash === options
-          raise ArgumentError, ':page parameter required' unless options.key? :page
-          
-          if options[:count] and options[:total_entries]
-            raise ArgumentError, ':count and :total_entries are mutually exclusive'
-          end
 
-          page     = options[:page] || 1
-          per_page = options[:per_page] || self.per_page
-          total    = options[:total_entries]
-          
-          return [page, per_page, total]
+      protected
+
+      def wp_parse_options(options) #:nodoc:
+        fail ArgumentError, 'parameter hash expected' unless Hash === options
+        fail ArgumentError, ':page parameter required' unless options.key? :page
+
+        if options[:count] && options[:total_entries]
+          fail ArgumentError, ':count and :total_entries are mutually exclusive'
         end
-        
+
+        page     = options[:page] || 1
+        per_page = options[:per_page] || self.per_page
+        total    = options[:total_entries]
+
+        [page, per_page, total]
+      end
     end
   end
 end
