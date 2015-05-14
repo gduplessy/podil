@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Podil::Application.config.secret_token = '66666c6a41510cfb5bada4a7b93fe5e1fca887a3a3b7290360472a60292037b6e52dd89bb505b3d48a19285b889fb5bc98a93038b146e23928456b8e0107146c'
+Podil::Application.config.secret_token = '7efb710799df395c3bae3e939c559af56aa9236f50621203fd672154d915d58aca365159a55a3d5e545b01ce644a384b57c0265a0348a5147c17c13b83ae7494'
