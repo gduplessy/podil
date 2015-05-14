@@ -37,6 +37,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_commentable (4.0.2)
     addressable (2.3.8)
     arel (6.0.0)
     buftok (0.2.0)
@@ -56,6 +57,7 @@ GEM
     diff-lcs (1.2.5)
     equalizer (0.0.11)
     erubis (2.7.0)
+    excon (0.45.3)
     execjs (2.5.2)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
@@ -63,6 +65,9 @@ GEM
       faraday (>= 0.7.4, < 0.10)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
+    has_scope (0.6.0)
+      actionpack (>= 3.2, < 5)
+      activesupport (>= 3.2, < 5)
     hpricot (0.8.6)
     http (0.6.4)
       http_parser.rb (~> 0.6.0)
@@ -71,11 +76,17 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    inherited_resources (1.6.0)
+      actionpack (>= 3.2, < 5)
+      has_scope (~> 0.6.0.rc)
+      railties (>= 3.2, < 5)
+      responders
     jquery-rails (4.0.3)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.2)
+    jwt (1.5.0)
     loofah (2.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -85,6 +96,7 @@ GEM
     mime-types (2.5)
     mini_portile (0.6.2)
     minitest (5.6.1)
+    multi_json (1.11.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     musix_match (0.2.0)
@@ -96,6 +108,13 @@ GEM
     net-ssh (2.9.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    oauth (0.4.7)
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
     rack (1.6.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -124,6 +143,8 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
+    responders (2.1.0)
+      railties (>= 4.2.0, < 5)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -190,8 +211,17 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
+    will_paginate (3.0.7)
     xml-simple (1.1.5)
-    youtube-g (0.5.0)
+    youtube_it (2.4.2)
+      builder
+      excon
+      faraday (>= 0.8, < 0.10)
+      json (~> 1.8)
+      nokogiri (~> 1.6.0)
+      oauth (~> 0.4.4)
+      oauth2 (~> 1.0.0)
+      simple_oauth (>= 0.1.5)
 
 PLATFORMS
   ruby
@@ -199,10 +229,14 @@ PLATFORMS
 DEPENDENCIES
   RedCloth
   activesupport
+  acts_as_commentable
   capistrano
   coffee-rails (~> 4.1.0)
+  faraday
   faraday_middleware
   hpricot
+  httparty
+  inherited_resources
   jquery-rails
   musix_match
   rails (= 4.2.1)
@@ -214,5 +248,6 @@ DEPENDENCIES
   twitter
   uglifier (>= 1.0.3)
   webrat
+  will_paginate
   xml-simple
-  youtube-g
+  youtube_it
