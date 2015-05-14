@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.3'
+gem 'rails', '3.2.21'
 gem 'sqlite3-ruby', require: 'sqlite3'
 gem 'youtube-g'
 gem 'musix_match'
@@ -11,6 +11,14 @@ gem 'activesupport'
 gem 'twitter'
 gem 'faraday_middleware'
 gem 'capistrano'
+
+group :assets do
+  gem 'sass-rails',   '~> 3.2.6'
+  gem 'coffee-rails', '~> 3.2.2'
+  gem 'uglifier',     '>= 1.0.3'
+end
+
+gem 'jquery-rails'
 
 group :development do
   gem 'rspec-rails'
