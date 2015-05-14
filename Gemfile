@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.21'
+gem 'rails', '4.2.1'
 gem 'sqlite3-ruby', require: 'sqlite3'
 gem 'youtube-g'
 gem 'musix_match'
@@ -13,8 +13,8 @@ gem 'faraday_middleware'
 gem 'capistrano'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.2'
+  gem 'sass-rails',   '~> 5.0.3'
+  gem 'coffee-rails', '~> 4.1.0'
   gem 'uglifier',     '>= 1.0.3'
 end
 
@@ -27,7 +27,7 @@ end
 group :test do
   gem 'rspec'
   gem 'webrat'
-  gem 'spork', '0.8.4'
+  gem 'spork', '0.9.2'
 end
 # Use unicorn as the web server
 # gem 'unicorn'
