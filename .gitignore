@@ -4,3 +4,4 @@ config/deploy.rb
 db/*.sqlite3
 log/*.log
 tmp/**/*
+.DS_STORE
