@@ -15,7 +15,7 @@ gem 'faraday'
 gem 'httparty'
 #gem 'last_fm'
 #gem 'yahoo-music'
-gem 'youtube_it'
+gem 'yourub'
 gem 'inherited_resources'
 gem 'acts_as_commentable'
 
