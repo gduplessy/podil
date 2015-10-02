@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.4'
 gem 'sqlite3-ruby', require: 'sqlite3'
 gem 'musix_match'
 gem 'RedCloth'
