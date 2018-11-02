@@ -16,7 +16,7 @@ gem 'httparty'
 #gem 'last_fm'
 #gem 'yahoo-music'
 gem 'yourub'
-gem 'inherited_resources', '>= 1.7.2'
+gem 'inherited_resources', '>= 1.9.0'
 gem 'acts_as_commentable'
 
 group :assets do
@@ -25,10 +25,10 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
-gem 'jquery-rails', '>= 4.3.1'
+gem 'jquery-rails', '>= 4.3.3'
 
 group :development do
-  gem 'rspec-rails', '>= 3.6.1'
+  gem 'rspec-rails', '>= 3.8.0'
 end
 
 group :test do
