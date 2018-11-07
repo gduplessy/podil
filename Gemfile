@@ -28,12 +28,12 @@ end
 gem 'jquery-rails', '>= 4.3.3'
 
 group :development do
-  gem 'rspec-rails', '>= 3.8.0'
+  gem 'rspec-rails', '>= 3.8.1'
 end
 
 group :test do
   gem 'rspec'
-  gem 'webrat'
+  gem 'webrat', '>= 0.7.3'
   gem 'spork', '0.9.2'
 end
 
