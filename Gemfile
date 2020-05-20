@@ -1,12 +1,12 @@
 source 'http://rubygems.org'
 
-gem 'rails', '5.0.1'
+gem 'rails', '5.2.4.3'
 gem 'sqlite3-ruby', require: 'sqlite3'
 gem 'musix_match', '>= 0.2.0'
 gem 'RedCloth'
 gem 'xml-simple'
 gem 'hpricot'
-gem 'activesupport'
+gem 'activesupport', '>= 5.2.4.3'
 gem 'twitter'
 gem 'faraday_middleware'
 gem 'capistrano'
@@ -21,7 +21,7 @@ gem 'acts_as_commentable'
 
 group :assets do
   gem 'sass-rails', '~> 5.0.7'
-  gem 'coffee-rails', '~> 4.1.1'
+  gem 'coffee-rails', '~> 4.2.2'
   gem 'uglifier',     '>= 1.0.3'
 end
 
