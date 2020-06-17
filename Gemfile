@@ -16,19 +16,19 @@ gem 'httparty'
 #gem 'last_fm'
 #gem 'yahoo-music'
 gem 'yourub'
-gem 'inherited_resources', '>= 1.9.0'
+gem 'inherited_resources', '>= 1.11.0'
 gem 'acts_as_commentable'
 
 group :assets do
-  gem 'sass-rails', '~> 5.0.7'
+  gem 'sass-rails', '~> 5.0.8'
   gem 'coffee-rails', '~> 4.2.2'
   gem 'uglifier',     '>= 1.0.3'
 end
 
-gem 'jquery-rails', '>= 4.3.5'
+gem 'jquery-rails', '>= 4.4.0'
 
 group :development do
-  gem 'rspec-rails', '>= 3.8.2'
+  gem 'rspec-rails', '>= 3.8.3'
 end
 
 group :test do
