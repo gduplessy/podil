@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '5.2.4.4'
+gem 'rails', '6.0.3.5'
 gem 'sqlite3-ruby', require: 'sqlite3'
 gem 'musix_match', '>= 0.2.0'
 gem 'RedCloth'
@@ -16,7 +16,7 @@ gem 'httparty'
 #gem 'last_fm'
 #gem 'yahoo-music'
 gem 'yourub'
-gem 'inherited_resources', '>= 1.11.0'
+gem 'inherited_resources', '>= 1.12.0'
 gem 'acts_as_commentable'
 
 group :assets do
