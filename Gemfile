@@ -16,7 +16,7 @@ gem 'httparty'
 #gem 'last_fm'
 #gem 'yahoo-music'
 gem 'yourub'
-gem 'inherited_resources', '>= 1.11.0'
+gem 'inherited_resources', '>= 1.12.0'
 gem 'acts_as_commentable'
 
 group :assets do
