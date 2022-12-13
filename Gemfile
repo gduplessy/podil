@@ -6,7 +6,7 @@ gem 'musix_match', '>= 0.2.0'
 gem 'RedCloth'
 gem 'xml-simple'
 gem 'hpricot'
-gem 'activesupport', '>= 5.2.4.3'
+gem 'activesupport', '>= 5.2.7.1'
 gem 'twitter', '>= 6.2.0'
 gem 'faraday_middleware'
 gem 'capistrano'
@@ -25,10 +25,10 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
-gem 'jquery-rails', '>= 4.4.0'
+gem 'jquery-rails', '>= 4.5.0'
 
 group :development do
-  gem 'rspec-rails', '>= 3.8.3'
+  gem 'rspec-rails', '>= 5.1.2'
 end
 
 group :test do
