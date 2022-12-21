@@ -20,7 +20,7 @@ gem 'inherited_resources', '>= 1.13.1'
 gem 'acts_as_commentable'
 
 group :assets do
-  gem 'sass-rails', '~> 5.0.8'
+  gem 'sass-rails', '~> 6.0.0'
   gem 'coffee-rails', '~> 4.2.2'
   gem 'uglifier',     '>= 1.0.3'
 end
