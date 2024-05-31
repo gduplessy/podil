@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '7.0.7.2'
+gem 'rails', '7.0.8'
 gem 'sqlite3-ruby', require: 'sqlite3'
 gem 'musix_match', '>= 0.2.0'
 gem 'RedCloth'
@@ -16,19 +16,19 @@ gem 'httparty', '>= 0.21.0'
 #gem 'last_fm'
 #gem 'yahoo-music'
 gem 'yourub', '>= 2.0.3'
-gem 'inherited_resources', '>= 1.13.1'
+gem 'inherited_resources', '>= 1.14.0'
 gem 'acts_as_commentable'
 
 group :assets do
   gem 'sass-rails', '~> 6.0.0'
-  gem 'coffee-rails', '~> 4.2.2'
+  gem 'coffee-rails', '~> 5.0.0'
   gem 'uglifier',     '>= 1.0.3'
 end
 
 gem 'jquery-rails', '>= 4.6.0'
 
 group :development do
-  gem 'rspec-rails', '>= 6.0.1'
+  gem 'rspec-rails', '>= 6.0.2'
 end
 
 group :test do
