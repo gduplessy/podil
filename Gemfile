@@ -21,14 +21,14 @@ gem 'acts_as_commentable'
 
 group :assets do
   gem 'sass-rails', '~> 6.0.0'
-  gem 'coffee-rails', '~> 4.2.2'
+  gem 'coffee-rails', '~> 5.0.0'
   gem 'uglifier',     '>= 1.0.3'
 end
 
 gem 'jquery-rails', '>= 4.6.0'
 
 group :development do
-  gem 'rspec-rails', '>= 6.0.1'
+  gem 'rspec-rails', '>= 6.0.2'
 end
 
 group :test do
