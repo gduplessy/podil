@@ -17,8 +17,7 @@
 
 # Podil, because sharing is caring
 This was a book sharing web app. Now it is a search engine that combines videos from [Youtube](http://www.youtube.com), metadata from  [...] and lyrics (when possible) from [MusixMatch](http://musixmatch.com/)
-I am doing this for the indextank [holiday hack contest](http://blog.indextank.com/93/holiday-hacks-indextank-heroku/)
-so we'll see how that goes!
+I am doing this for the indextank [holiday hack contest](http://blog.indextank.com/93/holiday-hacks-indextank-heroku/) so we'll see how that goes!
 Happy Holidays to everyone and good luck to the participants!
 
 ## Steps
@@ -31,7 +30,8 @@ and the one in the [Rails Tutorial Book](http://railstutorial.org/).
 * Add lyrics in the app [X]
 
 * Add Metadata (title, author, length, places to buy[?]).
-Other music by the same artist (list). [/]
+
+* Other music by the same artist (list). [/]
 
 * Implement IndexTank API
 
