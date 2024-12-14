@@ -4,8 +4,8 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.0", ">= 8.0.0.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-# Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", ">= 2.1.0"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
@@ -18,6 +18,11 @@ gem "stimulus-rails"
 gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+
+# HTTParty is a simple HTTP client library for Ruby that makes it easy to send HTTP requests and parse the responses.
+gem 'httparty'
+# Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
+gem 'dotenv-rails'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
