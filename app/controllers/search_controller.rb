@@ -32,10 +32,17 @@ class SearchController < ApplicationController
       end
     end 
   
-   # @purchase_links = {
-   #   "iTunes" => lastfm_results['track']['toptags']['tag'].first['url'],
-   #   "Amazon Music" => lastfm_results['track']['toptags']['tag'].last['url']
-   # }
+   @purchase_links = {
+      "Spotify" => "https://open.spotify.com/search/track:#{@song_title}",
+      "Apple Music" => "https://music.apple.com/search?term=#{@song_title}",
+      "Tidal" => "https://tidal.com/search?q=#{@song_title}",
+      "Amazon Music" => "https://music.amazon.com/search?term=#{@song_title}",
+      "Google Play Music" => "https://play.google.com/store/search?q=#{@song_title}",
+      "YouTube Music" => "https://music.youtube.com/search?q=#{@song_title}",
+      "Deezer" => "https://deezer.com/search/#{@song_title}",
+      "SoundCloud" => "https://soundcloud.com/search?q=#{@song_title}",
+      "Bandcamp" => "https://bandcamp.com/search?q=#{@song_title}",
+    }
 
     # Genius lyrics
     #genius_results = GeniusService.search("#{@artist_name} #{@song_title}")

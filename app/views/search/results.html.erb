@@ -41,7 +41,9 @@
       <p>Length: <%= @song_length %></p>
       <h3>Buy this song:</h3>
       <ul>
-        PLACEHOLDER
+        <% @purchase_links.each do |store, link| %>
+        <li><a href="<%= link %>" target="_blank"><%= store %></a></li>
+      <% end %>
       </ul>
     </div>
     
