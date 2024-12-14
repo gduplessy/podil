@@ -1,26 +1,55 @@
 <!-- app/views/search/results.html.erb -->
+<% if flash[:error] %>
+  <div class="relative bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded flex items-center justify-between" role="alert">
+    <span><%= flash[:error] %></span>
+    <button onclick="closeError()" class="text-red-700 hover:text-red-900 focus:outline-none">
+      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    function closeError() {
+      window.location.href = '<%= search_index_path %>';
+    }
+  </script>
+<% end %>
 
 <div class="podil-container">
   <div class="video-section">
-    <iframe width="560" height="315" src="<%= @video_url %>" frameborder="0" allowfullscreen></iframe>
+    <% if flash[:error] %>
+      <%= image_tag "no_song_for_you.jpg", alt: "No song for you!", class: "w-full" %>
+      <div class="mt-8">
+        <h2 class="mb-4">Try again:</h2>
+        <%= form_tag(results_search_index_path, method: :get) do %>
+          <div class="search-box">
+            <%= text_field_tag :q, nil, placeholder: "Search for a song...", class: "search-input" %>
+            <%= submit_tag "Search", class: "search-button" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <iframe width="560" height="315" src="<%= @video_url %>" frameborder="0" allowfullscreen></iframe>
+    <% end %>
   </div>
   
-  <div class="metadata-section">
-    <h2><%= @song_title %></h2>
-    <p>Artist: <%= @artist_name %></p>
-    <p>Length: <%= @song_length %></p>
-    <h3>Buy this song:</h3>
-    <ul>
-      <% @purchase_links.each do |store, link| %>
-        <li><a href="<%= link %>" target="_blank"><%= store %></a></li>
-      <% end %>
-    </ul>
-  </div>
-  
-  <div class="lyrics-section">
-    <h3>Lyrics</h3>
-    <pre><%= @lyrics %></pre>
-  </div>
+  <% unless flash[:error] %>
+    <div class="metadata-section">
+      <h2><%= @song_title %></h2>
+      <p>Artist: <%= @artist_name %></p>
+      <p>Length: <%= @song_length %></p>
+      <h3>Buy this song:</h3>
+      <ul>
+        PLACEHOLDER
+      </ul>
+    </div>
+    
+    <div class="lyrics-section">
+      <h3>Lyrics</h3>
+      <pre>PLACEHOLDER</pre>
+    </div>
+  <% end %>
 </div>
 
 <style>
@@ -60,5 +89,30 @@
     background-color: #f5f5f5;
     padding: 15px;
     border-radius: 5px;
+  }
+
+  .search-box {
+    display: flex;
+    gap: 10px;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .search-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .search-button:hover {
+    background-color: #0056b3;
   }
 </style>
