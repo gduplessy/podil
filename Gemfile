@@ -1,39 +1,73 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rails', '7.2.0'
-gem 'sqlite3-ruby', require: 'sqlite3'
-gem 'musix_match', '>= 0.2.0'
-gem 'RedCloth'
-gem 'xml-simple'
-gem 'hpricot'
-gem 'activesupport', '>= 6.1.7.1'
-gem 'twitter', '>= 6.2.0'
-gem 'faraday_middleware'
-gem 'capistrano'
-gem 'will_paginate'
-gem 'faraday'
-gem 'httparty', '>= 0.21.0'
-#gem 'last_fm'
-#gem 'yahoo-music'
-gem 'yourub', '>= 2.0.3'
-gem 'inherited_resources', '>= 1.13.1'
-gem 'acts_as_commentable'
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 8.0.0", ">= 8.0.0.1"
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", ">= 2.1.0"
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", ">= 5.0"
+# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "jsbundling-rails"
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "cssbundling-rails"
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "jbuilder"
 
-group :assets do
-  gem 'sass-rails', '~> 6.0.0'
-  gem 'coffee-rails', '~> 5.0.0'
-  gem 'uglifier',     '>= 1.0.3'
+# HTTParty is a simple HTTP client library for Ruby that makes it easy to send HTTP requests and parse the responses.
+gem "httparty"
+# Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
+gem "dotenv-rails"
+# Tailwind CSS integration for Rails
+gem "tailwindcss-rails"
+
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cache"
+gem "solid_queue"
+gem "solid_cable"
+gem "pg"
+
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
+
+# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", require: false
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
+
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# gem "image_processing", "~> 1.2"
+
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem "brakeman", require: false
+
+  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "rubocop-rails-omakase", require: false
 end
 
-gem 'jquery-rails', '>= 4.6.0'
-
 group :development do
-  gem 'rspec-rails', '>= 6.0.2'
+  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "web-console"
 end
 
 group :test do
-  gem 'rspec'
-  gem 'webrat', '>= 0.7.3'
-  gem 'spork', '0.9.2'
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
 end
-
