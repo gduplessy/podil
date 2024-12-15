@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  root 'search#index'
+  root "search#index"
 
-  resources :search, only: [:index] do
+  resources :search, only: [ :index ] do
     collection do
       get :results
     end
