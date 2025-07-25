@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft"
+gem "propshaft", ">= 1.2.0"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1.0"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -24,7 +24,7 @@ gem "httparty"
 # Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
 gem "dotenv-rails"
 # Tailwind CSS integration for Rails
-gem "tailwindcss-rails"
+gem "tailwindcss-rails", ">= 4.3.0"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -34,7 +34,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
-gem "solid_queue"
+gem "solid_queue", ">= 1.2.1"
 gem "solid_cable"
 gem "pg"
 
