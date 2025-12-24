@@ -22,7 +22,7 @@ gem "jbuilder", ">= 2.14.0"
 # HTTParty is a simple HTTP client library for Ruby that makes it easy to send HTTP requests and parse the responses.
 gem "httparty"
 # Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
-gem "dotenv-rails"
+gem "dotenv-rails", ">= 3.2.0"
 # Tailwind CSS integration for Rails
 gem "tailwindcss-rails", ">= 4.3.0"
 
