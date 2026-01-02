@@ -20,7 +20,7 @@ gem "cssbundling-rails"
 gem "jbuilder", ">= 2.14.0"
 
 # HTTParty is a simple HTTP client library for Ruby that makes it easy to send HTTP requests and parse the responses.
-gem "httparty"
+gem "httparty", ">= 0.24.0"
 # Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
 gem "dotenv-rails", ">= 3.2.0"
 # Tailwind CSS integration for Rails
