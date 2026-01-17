@@ -1,0 +1,139 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+
+    <title>Too Many Requests (429)</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="robots" content="noindex, nofollow">
+
+    <style>
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      * {
+        margin: 0;
+      }
+
+      html {
+        font-size: 16px;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #FFF;
+        display: grid;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Aptos, Roboto, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: clamp(1rem, 2.5vw, 2rem);
+        -webkit-font-smoothing: antialiased;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: -0.0025em;
+        line-height: 1.4;
+        min-height: 100vh;
+        place-items: center;
+        text-rendering: optimizeLegibility;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      a {
+        color: #FFD700;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 0.0925em;
+      }
+
+      b, strong {
+        font-weight: 700;
+      }
+
+      i, em {
+        font-style: italic;
+      }
+
+      main {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        display: grid;
+        gap: 1.5em;
+        padding: 3em 2em;
+        place-items: center;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      main header {
+        width: min(100%, 8em);
+      }
+
+      main header svg {
+        height: auto;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      main article {
+        width: min(100%, 35em);
+      }
+
+      main article h1 {
+        font-size: 1.5em;
+        margin-bottom: 0.5em;
+      }
+
+      main article p {
+        font-size: 75%;
+        margin-bottom: 1em;
+        opacity: 0.9;
+      }
+
+      main article br {
+        display: none;
+
+        @media(min-width: 48em) {
+          display: inline;
+        }
+      }
+
+      .countdown {
+        font-size: 2em;
+        font-weight: 700;
+        color: #FFD700;
+        margin-top: 0.5em;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- This file lives in public/429.html -->
+
+    <main>
+      <header>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="#FFD700">
+          <circle cx="50" cy="50" r="45" fill="rgba(255, 215, 0, 0.2)" stroke="#FFD700" stroke-width="2"/>
+          <path d="M30 45 L40 35 L40 55 Z" fill="#FFD700"/>
+          <rect x="45" y="35" width="10" height="20" fill="#FFD700"/>
+          <rect x="60" y="35" width="10" height="20" fill="#FFD700"/>
+          <text x="50" y="80" font-size="12" text-anchor="middle" fill="#FFD700">SLOW DOWN</text>
+        </svg>
+      </header>
+      <article>
+        <h1>Whoa there! Slow down! 🐌</h1>
+        <p><strong>You've made too many requests.</strong><br>We need to protect our service from being overwhelmed.<br>Please wait a moment and try again.</p>
+        <p>This helps us keep Podil fast and available for everyone.</p>
+        <p class="countdown">Please wait 60 seconds</p>
+      </article>
+    </main>
+
+  </body>
+
+</html>

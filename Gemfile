@@ -23,6 +23,10 @@ gem "jbuilder", "~> 2.14"
 gem "httparty"
 # Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
 gem "dotenv-rails", "~> 3.2"
+# Rack middleware for rate limiting and blocking abusive requests
+gem "rack-attack", "~> 6.7"
+# Sitemap generator for SEO
+gem "sitemap_generator", "~> 6.3"
 # Tailwind CSS integration for Rails
 gem "tailwindcss-rails", "~> 4.3"
 
