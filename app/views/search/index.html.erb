@@ -1,5 +1,16 @@
-   <%= render 'shared/alert' %>
-  <div class="search-container">
+<% content_for :meta_description, 'Search millions of songs with Podil. Find music videos, lyrics, artist information, and streaming links across Spotify, Apple Music, YouTube Music, and more platforms.' %>
+
+<% content_for :head do %>
+  <script type="application/ld+json">
+    <%= website_schema %>
+  </script>
+  <script type="application/ld+json">
+    <%= organization_schema %>
+  </script>
+<% end %>
+
+<%= render 'shared/alert' %>
+<div class="search-container">
   <div class="min-h-screen bg-gradient-to-b from-purple-700 to-indigo-900 flex flex-col items-center justify-center p-4">
   <div class="text-center mb-8">
     <h1 class="text-5xl font-bold text-white mb-2">Podil</h1>

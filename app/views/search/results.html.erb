@@ -1,22 +1,31 @@
+<% if @song_title.present? && @artist_name.present? %>
+  <% content_for :meta_description, "Listen to #{@song_title} by #{@artist_name}. Watch the official video, find streaming links on Spotify, Apple Music, YouTube Music, and discover where to buy this track." %>
+
+  <% content_for :head do %>
+    <script type="application/ld+json">
+      <%= music_recording_schema(
+        song_title: @song_title,
+        artist_name: @artist_name,
+        duration: @song_length,
+        video_url: @video_url
+      ) %>
+    </script>
+  <% end %>
+<% end %>
+
 <div class="min-h-screen bg-gradient-to-b from-purple-700 to-indigo-900 py-12 px-4">
   <div class="max-w-4xl mx-auto">
     <% if flash[:error] %>
       <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-lg shadow-md" role="alert">
         <div class="flex items-center justify-between">
           <span><%= flash[:error] %></span>
-          <button onclick="closeError()" class="text-red-700 hover:text-red-900 focus:outline-none">
+          <%= link_to search_index_path, class: "text-red-700 hover:text-red-900 focus:outline-none", aria_label: "Close error message" do %>
             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
-          </button>
+          <% end %>
         </div>
       </div>
-
-      <script>
-        function closeError() {
-          window.location.href = '<%= search_index_path %>';
-        }
-      </script>
     <% end %>
 
     <div class="bg-white rounded-lg shadow-xl overflow-hidden">
