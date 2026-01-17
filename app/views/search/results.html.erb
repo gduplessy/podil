@@ -46,9 +46,10 @@
               <div>
                 <h3 class="text-lg font-semibold text-purple-700 mb-2">Buy this song:</h3>
                 <div class="flex flex-wrap gap-4">
-                  <% @purchase_links_with_icons.each do |icon, link| %>
-                    <a href="<%= link %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded transition duration-300">
-                      <%= raw(icon) %>
+                  <% @purchase_links.each do |service, link| %>
+                    <a href="<%= link %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded transition duration-300" aria-label="Listen on <%= service %>">
+                      <%= render 'shared/music_service_icon', service: service %>
+                      <span class="ml-1"><%= service %></span>
                     </a>
                   <% end %>
                 </div>
