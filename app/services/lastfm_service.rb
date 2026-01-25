@@ -1,7 +1,8 @@
 # app/services/lastfm_service.rb
 class LastfmService
     include HTTParty
-    base_uri "http://ws.audioscrobbler.com/2.0/"
+    base_uri "https://ws.audioscrobbler.com/2.0/"
+    default_timeout 10 # 10 second timeout for API requests
 
     def self.get_track_info(artist, track)
       get("", query: {

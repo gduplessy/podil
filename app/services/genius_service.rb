@@ -2,6 +2,7 @@
 class GeniusService
     include HTTParty
     base_uri "https://api.genius.com"
+    default_timeout 10 # 10 second timeout for API requests
 
     def self.search(query)
       get("/search", query: { q: query }, headers: {
