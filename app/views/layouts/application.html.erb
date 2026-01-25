@@ -6,17 +6,41 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="robots" content="<%= content_for(:robots) || 'index, follow, max-image-preview:large' %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%# Open Graph tags for social sharing %>
+    <meta property="og:title" content="<%= content_for(:og_title) || content_for(:title) || 'Podil - Discover Music' %>">
+    <meta property="og:description" content="<%= content_for(:og_description) || content_for(:meta_description) || 'Discover and listen to music with Podil. Search for any song, watch videos, and find where to stream.' %>">
+    <meta property="og:type" content="<%= content_for(:og_type) || 'website' %>">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:image" content="<%= content_for(:og_image) || "#{root_url}icon.png" %>">
+    <meta property="og:site_name" content="Podil">
+
+    <%# Twitter Card tags %>
+    <meta name="twitter:card" content="<%= content_for(:twitter_card) || 'summary' %>">
+    <meta name="twitter:title" content="<%= content_for(:twitter_title) || content_for(:og_title) || content_for(:title) || 'Podil - Discover Music' %>">
+    <meta name="twitter:description" content="<%= content_for(:twitter_description) || content_for(:og_description) || content_for(:meta_description) || 'Discover and listen to music with Podil.' %>">
+    <meta name="twitter:image" content="<%= content_for(:twitter_image) || content_for(:og_image) || "#{root_url}icon.png" %>">
+
+    <%# Canonical URL to prevent duplicate content %>
+    <link rel="canonical" href="<%= content_for(:canonical_url) || request.original_url.split('?').first %>">
 
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%# Favicon implementation %>
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="icon" type="image/png" sizes="any" href="/icon.png">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="shortcut icon" href="/icon.png">
+
+    <%# Theme color for mobile browsers %>
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>

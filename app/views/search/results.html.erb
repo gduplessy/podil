@@ -1,6 +1,21 @@
 <% if @song_title.present? && @artist_name.present? %>
   <% content_for :meta_description, "Listen to #{@song_title} by #{@artist_name}. Watch the official video, find streaming links on Spotify, Apple Music, YouTube Music, and discover where to buy this track." %>
 
+  <%# Extract YouTube video ID for thumbnail %>
+  <% youtube_id = @video_url&.match(%r{/embed/([^?]+)})&.[](1) %>
+  <% thumbnail_url = youtube_id ? "https://img.youtube.com/vi/#{youtube_id}/maxresdefault.jpg" : nil %>
+
+  <%# Open Graph tags for social sharing %>
+  <% content_for :og_title, "#{@song_title} by #{@artist_name}" %>
+  <% content_for :og_description, "Watch the official video and find streaming links for #{@song_title} by #{@artist_name}." %>
+  <% content_for :og_type, "music.song" %>
+  <% content_for :og_image, thumbnail_url if thumbnail_url %>
+
+  <%# Twitter Card tags %>
+  <% content_for :twitter_card, "summary_large_image" %>
+  <% content_for :twitter_title, "#{@song_title} by #{@artist_name}" %>
+  <% content_for :twitter_image, thumbnail_url if thumbnail_url %>
+
   <% content_for :head do %>
     <script type="application/ld+json">
       <%= music_recording_schema(
@@ -31,9 +46,9 @@
     <div class="bg-white rounded-lg shadow-xl overflow-hidden">
       <div class="p-8">
         <% if flash[:error] %>
-          <%= image_tag "no_song_for_you.jpg", alt: "No song for you!", class: "w-full rounded-lg shadow-md mb-8" %>
+          <%= image_tag "no_song_for_you.jpg", alt: "No song for you!", class: "w-full rounded-lg shadow-md mb-8", loading: "lazy" %>
           <h2 class="text-2xl font-bold text-purple-800 mb-4">Try again:</h2>
-          <%= form_tag(results_search_index_path, method: :get, class: "mb-8") do %>
+          <%= form_tag(results_search_index_path, method: :post, class: "mb-8") do %>
             <div class="flex items-center space-x-4">
               <%= text_field_tag :q, nil, placeholder: "Search for a song...", class: "flex-grow px-4 py-2 rounded-full border-2 border-purple-300 focus:border-purple-500 focus:outline-none" %>
               <%= submit_tag "Search", class: "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-full transition duration-300" %>
@@ -41,19 +56,21 @@
           <% end %>
         <% else %>
           <h1 class="text-3xl font-bold text-purple-800 mb-6"><%= @song_title %></h1>
-          
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="video-section">
+              <h2 class="sr-only">Video</h2>
               <div class="aspect-w-16 aspect-h-9">
-                <iframe src="<%= @video_url %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-lg shadow-md"></iframe>
+                <iframe src="<%= @video_url %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-lg shadow-md" title="<%= @song_title %> by <%= @artist_name %>" loading="lazy"></iframe>
               </div>
             </div>
-            
+
             <div class="metadata-section space-y-4">
+              <h2 class="sr-only">Song Information</h2>
               <p class="text-xl text-gray-700">Artist: <span class="font-semibold"><%= @artist_name %></span></p>
               <p class="text-lg text-gray-600">Length: <%= @song_length %></p>
               <div>
-                <h3 class="text-lg font-semibold text-purple-700 mb-2">Buy this song:</h3>
+                <h3 class="text-lg font-semibold text-purple-700 mb-2">Where to listen:</h3>
                 <div class="flex flex-wrap gap-4">
                   <% @purchase_links.each do |service, link| %>
                     <a href="<%= link %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded transition duration-300" aria-label="Listen on <%= service %>">
