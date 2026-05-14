@@ -26,7 +26,7 @@ gem "dotenv-rails", "~> 3.2", ">= 3.2.0"
 # Rack middleware for rate limiting and blocking abusive requests
 gem "rack-attack", "~> 6.7"
 # Sitemap generator for SEO
-gem "sitemap_generator", "~> 6.3"
+gem "sitemap_generator", "~> 7.0"
 # Tailwind CSS integration for Rails
 gem "tailwindcss-rails", "~> 4.3", ">= 4.3.0"
 
